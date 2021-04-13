@@ -4,7 +4,7 @@ Demo:
 
 ```tsx
 import React from 'react';
-import { Foo } from 'myapp';
+import { Foo } from 'ant-nest';
 
 export default () => <Foo title="First Demo" />;
 ```
