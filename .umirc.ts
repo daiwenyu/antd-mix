@@ -9,6 +9,8 @@ export default defineConfig({
   outputPath: 'docs-dist',
   // more config: https://d.umijs.org/config
   // esbuild: {},
+  base: process.env.NODE_ENV === 'production' ? '/ant-nest/' : '/',
+  publicPath: process.env.NODE_ENV === 'production' ? '/ant-nest/' : '/',
   extraBabelPlugins: [
     [
       'babel-plugin-import',
