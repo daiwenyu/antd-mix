@@ -1,11 +1,10 @@
-
 ## Foo
 
 Demo:
 
 ```tsx
 import React from 'react';
-import { Foo } from 'ant-nest';
+import { Foo } from 'myapp';
 
 export default () => <Foo title="First Demo" />;
 ```
