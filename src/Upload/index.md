@@ -1,23 +1,69 @@
 ## Upload
 
-Demo:
+### 代码演示
 
 ```tsx
+/**
+ * title: 基础使用
+ *
+ */
+
 import React from 'react';
 import { Upload } from 'ant-nest';
 
 export default () => (
   <Upload
+    value="https://f2wossfilehdd.blob.core.chinacloudapi.cn/matest/upload/backgroundimage/9Rv90KOqXd.png"
     uploadProps={{
-      disabled: true,
+      action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
+      listType: 'picture-card',
+      maxCount: 1,
     }}
   />
 );
 ```
 
+```tsx
+/**
+ * title: 结合Form使用
+ * desc: 打开控制台查看输出结果
+ */
+
+import React from 'react';
+import { Form } from 'antd';
+import { Upload } from 'ant-nest';
+
+export default () => (
+  <Form>
+    <Form.Item
+      label="上传图片"
+      name="uploadImg"
+      rules={[
+        {
+          required: true,
+        },
+      ]}
+    >
+      <Upload
+        value="https://f2wossfilehdd.blob.core.chinacloudapi.cn/matest/upload/backgroundimage/9Rv90KOqXd.png"
+        uploadProps={{
+          action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
+          listType: 'picture-card',
+          maxCount: 1,
+        }}
+      />
+    </Form.Item>
+  </Form>
+);
+```
+
 ### API
 
-| 参数         | 说明                                                        | 类型   | 默认值 | 版本 |
-| :----------- | :---------------------------------------------------------- | :----- | :----- | :--- |
-| uploadProps  | [Upload 参数](https://ant.design/components/upload-cn/#API) | object |        |      |
-| imgCropProps | [ImgCrop 参数](https://www.npmjs.com/package/antd-img-crop) | object |        |      |
+| 参数         | 说明                                                        | 类型       | 默认值 | 版本 |
+| :----------- | :---------------------------------------------------------- | :--------- | :----- | :--- |
+| uploadProps  | [Upload 参数](https://ant.design/components/upload-cn/#API) | object     |        |      |
+| imgCropProps | [ImgCrop 参数](https://www.npmjs.com/package/antd-img-crop) | object     |        |      |
+| size         | 图片大小（单位：kb）                                        | number     | -      |      |
+| value        | 设置已上传的图片                                            | UploadFile | -      |      |
+| onChange     | 上传文件列表发生变化时触发                                  |            |        |      |
+| response     | 处理上传接口返回的结果，需返回图片连接字符串                | object     |        |      |
