@@ -122,8 +122,8 @@ export default (props: AntNestUploadProps) => {
       }
 
       if (value && value.length) {
-        // @ts-ignore
         setFileList([
+          // @ts-ignore
           {
             status: 'done',
             response: { status: 'success', url: value },
