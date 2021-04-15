@@ -88,7 +88,10 @@ export default (props: AntNestUploadProps) => {
   };
 
   const handleChange = (changeValue: UploadChangeParam) => {
-    const { fileList: newFileList } = changeValue;
+    const { fileList: newFileList, file } = changeValue;
+    if (file.status === undefined) {
+      return;
+    }
     setFileList(newFileList);
   };
 
@@ -136,7 +139,12 @@ export default (props: AntNestUploadProps) => {
 
   return (
     <div>
-      <ImgCrop {...imgCropProps}>
+      <ImgCrop
+        {...imgCropProps}
+        // cropperProps={{
+        //   onMediaLoaded: mediaSize => console.log(mediaSize)
+        // }}
+      >
         <Upload
           {...uploadProps}
           beforeUpload={handleBeforeUpload}

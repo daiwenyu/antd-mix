@@ -13,11 +13,60 @@ import { Upload } from 'ant-nest';
 
 export default () => (
   <Upload
-    value="https://f2wossfilehdd.blob.core.chinacloudapi.cn/matest/upload/backgroundimage/9Rv90KOqXd.png"
     uploadProps={{
       action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
       listType: 'picture-card',
       maxCount: 1,
+    }}
+    imgCropProps={{
+      rotate: true,
+    }}
+  />
+);
+```
+
+```tsx
+/**
+ * title: 不使用剪裁框
+ *
+ */
+
+import React from 'react';
+import { Upload } from 'ant-nest';
+
+export default () => (
+  <Upload
+    uploadProps={{
+      action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
+      listType: 'picture-card',
+      maxCount: 1,
+    }}
+    imgCropProps={{
+      beforeCrop: () => false,
+    }}
+  />
+);
+```
+
+```tsx
+/**
+ * title: 设置图片大小限制
+ *
+ */
+
+import React from 'react';
+import { Upload } from 'ant-nest';
+
+export default () => (
+  <Upload
+    size={50}
+    uploadProps={{
+      action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
+      listType: 'picture-card',
+      maxCount: 1,
+    }}
+    imgCropProps={{
+      rotate: true,
     }}
   />
 );
@@ -38,6 +87,7 @@ export default () => (
     <Form.Item
       label="上传图片"
       name="uploadImg"
+      initialValue="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
       rules={[
         {
           required: true,
@@ -45,7 +95,6 @@ export default () => (
       ]}
     >
       <Upload
-        value="https://f2wossfilehdd.blob.core.chinacloudapi.cn/matest/upload/backgroundimage/9Rv90KOqXd.png"
         uploadProps={{
           action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
           listType: 'picture-card',
