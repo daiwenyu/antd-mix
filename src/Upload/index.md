@@ -106,11 +106,11 @@ export default () => (
 
 ### API
 
-| 参数         | 说明                                                        | 类型               | 默认值 | 版本 |
-| :----------- | :---------------------------------------------------------- | :----------------- | :----- | :--- |
-| uploadProps  | [Upload 参数](https://ant.design/components/upload-cn/#API) | object             |        |      |
-| imgCropProps | [ImgCrop 参数](https://www.npmjs.com/package/antd-img-crop) | object             |        |      |
-| size         | 图片大小（单位：kb）                                        | number             | -      |      |
-| value        | 设置已上传的图片                                            | UploadFile         | -      |      |
-| onChange     | 上传文件列表发生变化时触发                                  |                    |        |      |
-| response     | 处理上传接口返回的结果，需返回图片连接字符串                | (result) => string |        |      |
+| 参数         | 说明                                                                                   | 类型               | 默认值 | 版本 |
+| :----------- | :------------------------------------------------------------------------------------- | :----------------- | :----- | :--- |
+| uploadProps  | [Upload 参数](https://ant.design/components/upload-cn/#API)                            | object             |        |      |
+| imgCropProps | [ImgCrop 参数](https://www.npmjs.com/package/antd-img-crop)，设置 false 时关闭剪切功能 | object \| false    |        |      |
+| size         | 图片大小（单位：kb）                                                                   | number             | -      |      |
+| value        | 设置已上传的图片                                                                       | UploadFile         | -      |      |
+| onChange     | 上传文件列表发生变化时触发                                                             |                    |        |      |
+| response     | 处理上传接口返回的结果，需返回图片连接字符串                                           | (result) => string |        |      |
