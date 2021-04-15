@@ -41,9 +41,7 @@ export default () => (
       listType: 'picture-card',
       maxCount: 1,
     }}
-    imgCropProps={{
-      beforeCrop: () => false,
-    }}
+    imgCropProps={false}
   />
 );
 ```
@@ -51,7 +49,7 @@ export default () => (
 ```tsx
 /**
  * title: 设置图片大小限制
- *
+ * desc: 设置图片上限300kb
  */
 
 import React from 'react';
@@ -59,7 +57,7 @@ import { Upload } from 'ant-nest';
 
 export default () => (
   <Upload
-    size={50}
+    size={300}
     uploadProps={{
       action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
       listType: 'picture-card',

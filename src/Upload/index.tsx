@@ -13,7 +13,7 @@ import 'antd/es/slider/style';
 export declare type uploadValue = string | Array<string>;
 export interface AntNestUploadProps {
   uploadProps: UploadProps;
-  imgCropProps: ImgCropProps;
+  imgCropProps: ImgCropProps | false;
   size?: number;
   value?: uploadValue;
   onChange?: (imgUrl: uploadValue) => void;
@@ -35,13 +35,15 @@ export default (props: AntNestUploadProps) => {
   } = props;
 
   const { beforeUpload, maxCount } = uploadProps;
+  const beforeCrop = imgCropProps ? imgCropProps.beforeCrop : null;
 
-  const uploadButton = (
-    <div>
-      <PlusOutlined />
-      <div style={{ marginTop: 8 }}>Upload</div>
-    </div>
-  );
+  const uploadButton =
+    typeof maxCount === 'number' && fileList.length >= maxCount ? null : (
+      <div>
+        <PlusOutlined />
+        <div style={{ marginTop: 8 }}>Upload</div>
+      </div>
+    );
 
   const triggerChange = (currentFileList: Array<UploadFile>) => {
     if (currentFileList.length <= 1) {
@@ -95,6 +97,28 @@ export default (props: AntNestUploadProps) => {
     setFileList(newFileList);
   };
 
+  const handleBeforeCrop = (file: File, fileList: File[]) => {
+    if (typeof size === 'number') {
+      const { size: fileSize } = file;
+      if (fileSize / 1024 > size) {
+        message.warning('文件超出大小限制');
+        return false;
+      }
+    }
+    beforeCrop?.(file, fileList);
+    return true;
+  };
+
+  const currentUploadProps = {
+    ...uploadProps,
+    beforeUpload: handleBeforeUpload,
+    onChange: handleChange,
+    onPreview: handlePreview,
+    onRemove: handleRemove,
+    fileList,
+    children: uploadButton,
+  };
+
   useEffect(() => {
     if (fileList.length && fileList.every((v) => v.status === 'done')) {
       triggerChange(fileList);
@@ -139,25 +163,20 @@ export default (props: AntNestUploadProps) => {
 
   return (
     <div>
-      <ImgCrop
-        {...imgCropProps}
-        // cropperProps={{
-        //   onMediaLoaded: mediaSize => console.log(mediaSize)
-        // }}
-      >
-        <Upload
-          {...uploadProps}
-          beforeUpload={handleBeforeUpload}
-          onChange={handleChange}
-          onPreview={handlePreview}
-          onRemove={handleRemove}
-          fileList={fileList}
+      {imgCropProps === false ? (
+        <Upload {...currentUploadProps} />
+      ) : (
+        <ImgCrop
+          {...imgCropProps}
+          beforeCrop={handleBeforeCrop}
+          cropperProps={{
+            onCropSizeChange: () => console.log('change'),
+          }}
         >
-          {typeof maxCount === 'number' && fileList.length >= maxCount
-            ? null
-            : uploadButton}
-        </Upload>
-      </ImgCrop>
+          <Upload {...currentUploadProps} />
+        </ImgCrop>
+      )}
+
       <Modal
         title="图片预览"
         footer={null}
