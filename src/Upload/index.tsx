@@ -166,13 +166,7 @@ export default (props: AntNestUploadProps) => {
       {imgCropProps === false ? (
         <Upload {...currentUploadProps} />
       ) : (
-        <ImgCrop
-          {...imgCropProps}
-          beforeCrop={handleBeforeCrop}
-          cropperProps={{
-            onCropSizeChange: () => console.log('change'),
-          }}
-        >
+        <ImgCrop {...imgCropProps} beforeCrop={handleBeforeCrop}>
           <Upload {...currentUploadProps} />
         </ImgCrop>
       )}
