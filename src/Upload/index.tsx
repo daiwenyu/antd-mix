@@ -37,6 +37,30 @@ export default (props: AntNestUploadProps) => {
   const { beforeUpload, maxCount } = uploadProps;
   const beforeCrop = imgCropProps ? imgCropProps.beforeCrop : null;
 
+  // 文件大小校验
+  const checkFileSize = (file: RcFile | File) => {
+    if (typeof size === 'number') {
+      const { size: fileSize } = file;
+      if (fileSize / 1024 > size) {
+        message.warning('文件超出大小限制');
+        return false;
+      }
+    }
+    return true;
+  };
+
+  // 文件类型校验
+  const checkFileType = (file: RcFile | File) => {
+    if (typeof uploadProps.accept === 'string') {
+      const fileTypeList = uploadProps.accept.split(',').map((v) => v.trim());
+      if (fileTypeList.includes(file.type) === false) {
+        message.warning('文件类型有误');
+        return false;
+      }
+    }
+    return true;
+  };
+
   const uploadButton =
     typeof maxCount === 'number' && fileList.length >= maxCount ? null : (
       <div>
@@ -62,12 +86,15 @@ export default (props: AntNestUploadProps) => {
 
   const handleBeforeUpload = async (file: RcFile, fileList: Array<RcFile>) => {
     // 大小校验
-    if (typeof size === 'number') {
-      const { size: fileSize } = file;
-      if (fileSize / 1024 > size) {
-        message.warning('文件超出大小限制');
-        return Promise.reject();
-      }
+    const fileSizeStatus = checkFileSize(file);
+    if (!fileSizeStatus) {
+      return Promise.reject();
+    }
+
+    // 文件类型校验
+    const fileTypeStatus = checkFileType(file);
+    if (!fileTypeStatus) {
+      return Promise.reject();
     }
 
     if (beforeUpload) {
@@ -98,13 +125,18 @@ export default (props: AntNestUploadProps) => {
   };
 
   const handleBeforeCrop = (file: File, fileList: File[]) => {
-    if (typeof size === 'number') {
-      const { size: fileSize } = file;
-      if (fileSize / 1024 > size) {
-        message.warning('文件超出大小限制');
-        return false;
-      }
+    // 大小校验
+    const fileSizeStatus = checkFileSize(file);
+    if (!fileSizeStatus) {
+      return false;
     }
+
+    // 文件类型校验
+    const fileTypeStatus = checkFileType(file);
+    if (!fileTypeStatus) {
+      return false;
+    }
+
     beforeCrop?.(file, fileList);
     return true;
   };
