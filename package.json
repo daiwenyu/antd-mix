@@ -1,6 +1,6 @@
 {
   "name": "ant-nest",
-  "version": "0.0.10",
+  "version": "0.0.13",
   "scripts": {
     "start": "dumi dev",
     "docs:build": "dumi build",

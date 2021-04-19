@@ -1,6 +1,6 @@
 /**
- * title: 结合Form使用
- * desc: 打开控制台查看输出结果
+ * title: 结合Form使用Avatar
+ * desc: 打开控制台查看输出结果,image/png
  */
 
 import React from 'react';
@@ -21,16 +21,16 @@ export default () => {
           },
         ]}
       >
-        <Upload
+        <Upload.Avatar
+          size={20}
           imgCropProps={{
             rotate: true,
           }}
           uploadProps={{
             action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
-            listType: 'picture-card',
-            maxCount: 1,
+            accept: 'image/png',
           }}
-          response={(res) => res}
+          response={(res) => res.url}
         />
       </Form.Item>
       <Button
@@ -43,15 +43,6 @@ export default () => {
         }}
       >
         设置图片
-      </Button>
-      <Button
-        onClick={() => {
-          form.setFieldsValue({
-            uploadImg: '',
-          });
-        }}
-      >
-        重置图片
       </Button>
     </Form>
   );
