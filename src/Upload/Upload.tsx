@@ -41,11 +41,11 @@ export default (props: AntNestUploadProps) => {
   const beforeCrop = imgCropProps ? imgCropProps.beforeCrop : null;
 
   // 文件大小校验
-  const checkFileSize = (file: RcFile | File) => {
+  const checkFileSize = (file: RcFile | File, ignoreMessage?: boolean) => {
     if (typeof size === 'number') {
       const { size: fileSize } = file;
       if (fileSize / 1024 > size) {
-        message.warning('文件超出大小限制');
+        !ignoreMessage && message.warning('文件超出大小限制');
         return false;
       }
     }
@@ -87,17 +87,43 @@ export default (props: AntNestUploadProps) => {
     }
   };
 
-  const handleBeforeUpload = async (file: RcFile, fileList: Array<RcFile>) => {
-    // 大小校验
-    const fileSizeStatus = checkFileSize(file);
-    if (!fileSizeStatus) {
-      return Promise.reject();
-    }
+  const changeImgType = (file: RcFile, encoderOptions = 1) => {
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        const img = document.createElement('img');
+        // @ts-ignore
+        img.src = reader.result;
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          canvas.width = img.naturalWidth;
+          canvas.height = img.naturalHeight;
+          const ctx = canvas.getContext('2d');
+          // @ts-ignore
+          ctx.drawImage(img, 0, 0);
+          canvas.toBlob(resolve, 'image/jpeg', encoderOptions);
+        };
+      };
+    });
+  };
 
+  const handleBeforeUpload = async (file: RcFile, fileList: Array<RcFile>) => {
     // 文件类型校验
     const fileTypeStatus = checkFileType(file);
     if (!fileTypeStatus) {
       return Promise.reject();
+    }
+
+    // 大小校验
+    const fileSizeStatus = checkFileSize(file, !!imgCropProps);
+    if (!fileSizeStatus) {
+      if (imgCropProps && size) {
+        // @ts-ignore 当使用图片剪裁插件且图片格式为png时，进行转码
+        file = await changeImgType(file, (size * 1024) / file.size);
+      } else {
+        return Promise.reject();
+      }
     }
 
     if (beforeUpload) {

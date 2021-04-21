@@ -22,6 +22,7 @@ export default () => {
         ]}
       >
         <Upload
+          size={300}
           imgCropProps={{
             rotate: true,
           }}
