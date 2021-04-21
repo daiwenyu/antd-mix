@@ -18,6 +18,7 @@ export interface AntNestUploadProps {
   imgCropProps: ImgCropProps | false;
   size?: number;
   value?: uploadValue;
+  name?: string;
   onChange?: (imgUrl: uploadValue) => void;
   response: (res: any) => string | [string]; // 获取返回数据图片url
 }
@@ -26,7 +27,6 @@ export default (props: AntNestUploadProps) => {
   const [fileList, setFileList] = useState<Array<UploadFile>>([]);
   const [previewVisible, setPreviewVisible] = useState(false);
   const [previewImage, setPreviewImage] = useState('');
-
   const {
     uploadProps = {},
     imgCropProps = {},
@@ -34,6 +34,7 @@ export default (props: AntNestUploadProps) => {
     value,
     onChange,
     response,
+    name,
   } = props;
 
   const { beforeUpload, maxCount } = uploadProps;
@@ -198,7 +199,7 @@ export default (props: AntNestUploadProps) => {
   }, [value]);
 
   return (
-    <div>
+    <div id={name}>
       {imgCropProps === false ? (
         <Upload {...currentUploadProps} />
       ) : (
