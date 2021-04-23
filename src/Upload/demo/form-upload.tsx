@@ -4,7 +4,7 @@
  */
 
 import React from 'react';
-import { Form, Button } from 'antd';
+import { Form, Button, Space } from 'antd';
 import { Upload } from 'ant-nest';
 
 export default () => {
@@ -34,26 +34,28 @@ export default () => {
           response={(res) => res}
         />
       </Form.Item>
-      <Button
-        type="primary"
-        onClick={() => {
-          form.setFieldsValue({
-            uploadImg:
-              'https://gw.alipayobjects.com/zos/rmsportal/nBVXkrFdWHxbZlmMbsaH.svg',
-          });
-        }}
-      >
-        设置图片
-      </Button>
-      <Button
-        onClick={() => {
-          form.setFieldsValue({
-            uploadImg: '',
-          });
-        }}
-      >
-        重置图片
-      </Button>
+      <Space>
+        <Button
+          type="primary"
+          onClick={() => {
+            form.setFieldsValue({
+              uploadImg:
+                'https://gw.alipayobjects.com/zos/rmsportal/nBVXkrFdWHxbZlmMbsaH.svg',
+            });
+          }}
+        >
+          设置图片
+        </Button>
+        <Button
+          onClick={() => {
+            form.setFieldsValue({
+              uploadImg: '',
+            });
+          }}
+        >
+          重置图片
+        </Button>
+      </Space>
     </Form>
   );
 };
