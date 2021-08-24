@@ -1,9 +1,9 @@
 {
-  "name": "ant-nest",
-  "version": "0.0.15",
-  "homepage": "http://gooccby.gitee.io/ant-nest",
-  "repository": "https://gitee.com/gooccby/ant-nest.git",
-  "bugs": "https://gitee.com/gooccby/ant-nest/issues",
+  "name": "antd-mix",
+  "version": "0.0.1",
+  "homepage": "http://gooccby.gitee.io/antd-mix",
+  "repository": "https://gitee.com/gooccby/antd-mix.git",
+  "bugs": "https://gitee.com/gooccby/antd-mix/issues",
   "scripts": {
     "start": "dumi dev",
     "docs:build": "dumi build",

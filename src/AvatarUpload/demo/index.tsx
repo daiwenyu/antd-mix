@@ -1,5 +1,5 @@
 import React from 'react';
-import { AvatarUpload } from 'ant-nest';
+import { AvatarUpload } from 'antd-mix';
 
 export default () => {
   return (

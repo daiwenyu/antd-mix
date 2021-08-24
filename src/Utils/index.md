@@ -13,7 +13,7 @@
  */
 
 import React from 'react';
-import { Utils } from 'ant-nest';
+import { Utils } from 'antd-mix';
 
 export default () => <div>当前{Utils.isWechat ? '是' : '不是'}微信环境</div>;
 ```
@@ -21,7 +21,7 @@ export default () => <div>当前{Utils.isWechat ? '是' : '不是'}微信环境<
 ### 引入微信 JS-SDK
 
 ```ts
-import { Utils } from 'ant-nest';
+import { Utils } from 'antd-mix';
 
 async function addWxSDK() {
   await Utils.wxSDK({
