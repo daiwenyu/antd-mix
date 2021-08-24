@@ -1,4 +1,4 @@
 import * as Utils from './Utils';
+import AvatarUpload from './AvatarUpload';
 
-export { default as Upload } from './Upload';
-export { Utils };
+export { Utils, AvatarUpload };
