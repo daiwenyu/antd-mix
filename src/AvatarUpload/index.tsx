@@ -8,6 +8,8 @@ import {
   RcFile,
   UploadChangeParam,
 } from 'antd/lib/upload/interface';
+import 'antd/es/modal/style';
+import 'antd/es/slider/style';
 
 // TODO 错误状态提示
 
@@ -99,7 +101,11 @@ export default function (props: AvatarUploadProps): React.ReactNode {
 
   useEffect(() => {}, [value]);
 
-  useEffect(() => {}, [imageUrl]);
+  useEffect(() => {
+    if (imageUrl !== value) {
+      onChange?.(imageUrl);
+    }
+  }, [imageUrl]);
 
   return (
     <ImgCrop {...imgCropProps}>
