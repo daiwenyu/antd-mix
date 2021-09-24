@@ -14,10 +14,10 @@ import {
   RcFile,
   UploadChangeParam,
 } from 'antd/lib/upload/interface';
+import { downloadFile } from '@/Utils/index';
 import 'antd/es/modal/style';
 import 'antd/es/slider/style';
-import styles from './index.less';
-import { downloadFile } from '@/Utils/index';
+import './index.less';
 
 // TODO 错误状态提示
 // 表单组件包裹时将错误信息推送至form显示
@@ -68,8 +68,8 @@ function AvatarPreview(props: { src: any; onDelete: any }) {
   const [visible, setVisible] = useState(false);
   const { src, onDelete } = props;
   return (
-    <div className={styles.pictureBox}>
-      <div className={styles.pictureMask}>
+    <div className="pictureBox">
+      <div className="pictureMask">
         <EyeOutlined onClick={() => setVisible(true)} />
         <DownloadOutlined
           onClick={() => {
