@@ -1,6 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Upload, message } from 'antd';
-import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
+import { Upload, message, Image } from 'antd';
+import {
+  DeleteOutlined,
+  DownloadOutlined,
+  EyeOutlined,
+  LoadingOutlined,
+  PlusOutlined,
+} from '@ant-design/icons';
 import ImgCrop from 'antd-img-crop';
 import { AvatarUploadProps } from './interface';
 import {
@@ -10,8 +16,11 @@ import {
 } from 'antd/lib/upload/interface';
 import 'antd/es/modal/style';
 import 'antd/es/slider/style';
+import styles from './index.less';
+import { downloadFile } from '@/Utils/index';
 
 // TODO 错误状态提示
+// 表单组件包裹时将错误信息推送至form显示
 
 // 文件大小校验
 export const checkFileSize = (file: RcFile, size?: number) => {
@@ -55,11 +64,45 @@ const changeImgType = (file: RcFile, encoderOptions = 1) => {
   });
 };
 
-export default function (props: AvatarUploadProps): React.ReactNode {
+function AvatarPreview(props: { src: any; onDelete: any }) {
+  const [visible, setVisible] = useState(false);
+  const { src, onDelete } = props;
+  return (
+    <div className={styles.pictureBox}>
+      <div className={styles.pictureMask}>
+        <EyeOutlined onClick={() => setVisible(true)} />
+        <DownloadOutlined
+          onClick={() => {
+            downloadFile(src);
+          }}
+        />
+        <DeleteOutlined onClick={onDelete} />
+      </div>
+      <div style={{ display: 'none' }}>
+        <Image
+          src={src}
+          preview={{
+            visible,
+            onVisibleChange: (currentVisible) => {
+              if (currentVisible === false) {
+                setVisible(false);
+              }
+            },
+          }}
+        />
+      </div>
+      <img src={src} alt="avatar" style={{ width: '100%' }} />
+    </div>
+  );
+}
+
+export default function (props: AvatarUploadProps) {
   const { size, value, onChange, response, imgCropProps, uploadProps } = props;
 
   const [loading, setLoading] = useState(false);
-  const [imageUrl, setImageUrl] = useState('');
+  const [imageUrl, setImageUrl] = useState(
+    'https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg',
+  );
 
   const handleBeforeUpload = async (file: RcFile, fileList: RcFile[]) => {
     // 文件类型校验
@@ -108,20 +151,27 @@ export default function (props: AvatarUploadProps): React.ReactNode {
   }, [imageUrl]);
 
   return (
-    <ImgCrop {...imgCropProps}>
-      <Upload
-        {...uploadProps}
-        listType="picture-card"
-        showUploadList={false}
-        beforeUpload={handleBeforeUpload}
-        onChange={handleChange}
-      >
-        {imageUrl ? (
-          <img src={imageUrl} alt="avatar" style={{ width: '100%' }} />
-        ) : (
-          uploadButton
-        )}
-      </Upload>
-    </ImgCrop>
+    <div>
+      {imageUrl ? (
+        <AvatarPreview
+          src={imageUrl}
+          onDelete={() => {
+            setImageUrl('');
+          }}
+        />
+      ) : (
+        <ImgCrop {...imgCropProps}>
+          <Upload
+            {...uploadProps}
+            listType="picture-card"
+            showUploadList={false}
+            beforeUpload={handleBeforeUpload}
+            onChange={handleChange}
+          >
+            {uploadButton}
+          </Upload>
+        </ImgCrop>
+      )}
+    </div>
   );
 }

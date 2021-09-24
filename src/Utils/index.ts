@@ -44,3 +44,12 @@ export const wxSDK = (option: WxSDKOption) => {
     document.body.appendChild(Script);
   });
 };
+
+export const downloadFile = (href: string) => {
+  const aEle = document.createElement('a');
+  aEle.target = '_blank';
+  aEle.href = href;
+  aEle.download = '';
+  aEle.click();
+  aEle.remove();
+};
