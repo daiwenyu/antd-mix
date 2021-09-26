@@ -1,6 +1,6 @@
 {
   "name": "antd-mix",
-  "version": "0.0.3",
+  "version": "0.0.5",
   "homepage": "http://gooccby.gitee.io/antd-mix",
   "repository": "https://gitee.com/gooccby/antd-mix.git",
   "bugs": "https://gitee.com/gooccby/antd-mix/issues",
@@ -38,9 +38,11 @@
     "@ant-design/icons": "^4.6.4",
     "antd": "^4.16.13",
     "antd-img-crop": "^3.16.0",
+    "lodash": "^4.17.21",
     "react": "^17.0.2"
   },
   "devDependencies": {
+    "@types/lodash": "^4.14.174",
     "@umijs/test": "^3.5.19",
     "babel-plugin-import": "^1.13.3",
     "dumi": "^1.1.29",

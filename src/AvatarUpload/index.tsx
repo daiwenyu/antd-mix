@@ -100,9 +100,7 @@ export default function (props: AvatarUploadProps) {
   const { size, value, onChange, response, imgCropProps, uploadProps } = props;
 
   const [loading, setLoading] = useState(false);
-  const [imageUrl, setImageUrl] = useState(
-    'https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg',
-  );
+  const [imageUrl, setImageUrl] = useState('');
 
   const handleBeforeUpload = async (file: RcFile, fileList: RcFile[]) => {
     // 文件类型校验
