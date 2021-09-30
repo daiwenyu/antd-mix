@@ -143,7 +143,7 @@ export default function (props: AvatarUploadProps) {
   useEffect(() => {}, [value]);
 
   useEffect(() => {
-    if (imageUrl !== value) {
+    if (!!imageUrl !== !!value && imageUrl !== value) {
       onChange?.(imageUrl);
     }
   }, [imageUrl]);
