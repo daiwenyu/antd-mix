@@ -100,7 +100,7 @@ export default function (props: AvatarUploadProps) {
   const { size, value, onChange, response, imgCropProps, uploadProps } = props;
 
   const [loading, setLoading] = useState(false);
-  const [imageUrl, setImageUrl] = useState('');
+  const [imageUrl, setImageUrl] = useState<string | undefined>('');
 
   const handleBeforeUpload = async (file: RcFile, fileList: RcFile[]) => {
     // 文件类型校验
@@ -129,7 +129,8 @@ export default function (props: AvatarUploadProps) {
     if (info.file.status === 'done') {
       const imgUrl = response(info.file.response);
       setLoading(false);
-      setImageUrl(imgUrl);
+      onChange?.(imgUrl);
+      // setImageUrl(imgUrl);
     }
   };
 
@@ -140,13 +141,14 @@ export default function (props: AvatarUploadProps) {
     </div>
   );
 
-  useEffect(() => {}, [value]);
+  // @ts-ignore
+  useEffect(() => setImageUrl(value), [value]);
 
-  useEffect(() => {
-    if (!!imageUrl !== !!value && imageUrl !== value) {
-      onChange?.(imageUrl);
-    }
-  }, [imageUrl]);
+  // useEffect(() => {
+  //   if (imageUrl) {
+  //     onChange?.(imageUrl);
+  //   }
+  // }, [imageUrl]);
 
   return (
     <div>
@@ -154,7 +156,7 @@ export default function (props: AvatarUploadProps) {
         <AvatarPreview
           src={imageUrl}
           onDelete={() => {
-            setImageUrl('');
+            onChange?.('');
           }}
         />
       ) : (
