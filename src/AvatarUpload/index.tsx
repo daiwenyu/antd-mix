@@ -64,9 +64,9 @@ const changeImgType = (file: RcFile, encoderOptions = 1) => {
   });
 };
 
-function AvatarPreview(props: { src: any; onDelete: any }) {
+function AvatarPreview(props: { src: any; onDelete: any; disabled: boolean }) {
   const [visible, setVisible] = useState(false);
-  const { src, onDelete } = props;
+  const { src, onDelete, disabled } = props;
   return (
     <div className="pictureBox">
       <div className="pictureMask">
@@ -76,7 +76,7 @@ function AvatarPreview(props: { src: any; onDelete: any }) {
             downloadFile(src);
           }}
         />
-        <DeleteOutlined onClick={onDelete} />
+        {!disabled && <DeleteOutlined onClick={onDelete} />}
       </div>
       <div style={{ display: 'none' }}>
         <Image
@@ -97,7 +97,15 @@ function AvatarPreview(props: { src: any; onDelete: any }) {
 }
 
 export default function (props: AvatarUploadProps) {
-  const { size, value, onChange, response, imgCropProps, uploadProps } = props;
+  const {
+    size,
+    value,
+    disabled = false,
+    onChange,
+    response,
+    imgCropProps,
+    uploadProps,
+  } = props;
 
   const [loading, setLoading] = useState(false);
   const [imageUrl, setImageUrl] = useState<string | undefined>('');
@@ -154,6 +162,7 @@ export default function (props: AvatarUploadProps) {
     <div>
       {imageUrl ? (
         <AvatarPreview
+          disabled={disabled}
           src={imageUrl}
           onDelete={() => {
             onChange?.('');
@@ -162,6 +171,7 @@ export default function (props: AvatarUploadProps) {
       ) : (
         <ImgCrop {...imgCropProps}>
           <Upload
+            disabled={disabled}
             {...uploadProps}
             listType="picture-card"
             showUploadList={false}
