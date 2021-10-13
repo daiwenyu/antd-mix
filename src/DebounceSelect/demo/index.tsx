@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { DebounceSelect } from 'antd-mix';
 
 interface UserValue {
@@ -7,8 +7,7 @@ interface UserValue {
 }
 
 async function fetchUserList(username: string): Promise<UserValue[]> {
-  console.log('fetching user', username);
-
+  // console.log('fetching user', username);
   return fetch('https://randomuser.me/api/?results=5')
     .then((response) => response.json())
     .then((body) =>
@@ -25,11 +24,19 @@ async function fetchUserList(username: string): Promise<UserValue[]> {
 }
 
 export default function () {
-  const [value, setValue] = React.useState<UserValue[]>([]);
+  // const [value, setValue] = React.useState<UserValue[]>([]);
+  const [value, setValue] = React.useState('');
+
+  useEffect(() => {
+    setTimeout(() => {
+      setValue('test');
+    }, 3000);
+  }, []);
 
   return (
     <DebounceSelect
-      mode="multiple"
+      // mode="multiple"
+      showSearch
       value={value}
       placeholder="Select users"
       fetchOptions={fetchUserList}

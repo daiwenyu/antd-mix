@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Empty, Select, Spin } from 'antd';
 import { SelectProps } from 'antd/es/select';
 import { debounce } from 'lodash';
@@ -16,6 +16,7 @@ export default function DebounceSelect<
     value: string | number;
   } = any,
 >({ fetchOptions, debounceTimeout = 800, ...props }: DebounceSelectProps) {
+  const { value } = props;
   const [fetching, setFetching] = React.useState(false);
   const [options, setOptions] = React.useState<ValueType[]>([]);
   const fetchRef = React.useRef(0);
@@ -40,6 +41,15 @@ export default function DebounceSelect<
 
     return debounce(loadOptions, debounceTimeout);
   }, [fetchOptions, debounceTimeout]);
+
+  useEffect(() => {
+    if (
+      ['string', 'number'].includes(typeof value) &&
+      !options.find((v) => v.value === value)
+    ) {
+      debounceFetcher(value);
+    }
+  }, [value]);
 
   return (
     <Select<ValueType>
