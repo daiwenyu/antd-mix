@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Empty, Select, Spin } from 'antd';
 import { SelectProps } from 'antd/es/select';
 import { debounce } from 'lodash';
@@ -41,15 +41,6 @@ export default function DebounceSelect<
 
     return debounce(loadOptions, debounceTimeout);
   }, [fetchOptions, debounceTimeout]);
-
-  useEffect(() => {
-    if (
-      ['string', 'number'].includes(typeof value) &&
-      !options.find((v) => v.value === value)
-    ) {
-      debounceFetcher(value);
-    }
-  }, [value]);
 
   return (
     <Select<ValueType>

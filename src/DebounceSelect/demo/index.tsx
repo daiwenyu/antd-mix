@@ -27,12 +27,6 @@ export default function () {
   // const [value, setValue] = React.useState<UserValue[]>([]);
   const [value, setValue] = React.useState('');
 
-  useEffect(() => {
-    setTimeout(() => {
-      setValue('test');
-    }, 3000);
-  }, []);
-
   return (
     <DebounceSelect
       // mode="multiple"
