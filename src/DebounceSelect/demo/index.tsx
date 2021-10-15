@@ -24,8 +24,8 @@ async function fetchUserList(username: string): Promise<UserValue[]> {
 }
 
 export default function () {
-  const [value, setValue] = React.useState<UserValue[]>();
-  // const [value, setValue] = React.useState('');
+  // const [value, setValue] = React.useState<UserValue[]>();
+  const [value, setValue] = React.useState();
 
   return (
     <DebounceSelect
