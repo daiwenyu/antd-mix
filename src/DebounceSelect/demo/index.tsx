@@ -24,8 +24,8 @@ async function fetchUserList(username: string): Promise<UserValue[]> {
 }
 
 export default function () {
-  // const [value, setValue] = React.useState<UserValue[]>([]);
-  const [value, setValue] = React.useState('');
+  const [value, setValue] = React.useState<UserValue[]>();
+  // const [value, setValue] = React.useState('');
 
   return (
     <DebounceSelect
@@ -35,6 +35,7 @@ export default function () {
       placeholder="Select users"
       fetchOptions={fetchUserList}
       onChange={(newValue) => {
+        console.log(newValue);
         setValue(newValue);
       }}
       style={{ width: '100%' }}

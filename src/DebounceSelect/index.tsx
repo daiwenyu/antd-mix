@@ -44,7 +44,7 @@ export default function DebounceSelect<
 
   return (
     <Select<ValueType>
-      // labelInValue
+      labelInValue
       filterOption={false}
       onSearch={debounceFetcher}
       notFoundContent={fetching ? <Spin size="small" /> : <Empty />}
