@@ -17,6 +17,7 @@ import {
 import { downloadFile } from '@/Utils/index';
 import 'antd/es/modal/style';
 import 'antd/es/slider/style';
+import 'antd/es/upload/style';
 import './index.less';
 
 // TODO 错误状态提示
