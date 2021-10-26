@@ -106,6 +106,7 @@ export default function (props: AvatarUploadProps) {
     response,
     imgCropProps,
     uploadProps,
+    id,
   } = props;
 
   const [loading, setLoading] = useState(false);
@@ -160,7 +161,7 @@ export default function (props: AvatarUploadProps) {
   // }, [imageUrl]);
 
   return (
-    <div>
+    <div id={id}>
       {imageUrl ? (
         <AvatarPreview
           disabled={disabled}

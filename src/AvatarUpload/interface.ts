@@ -12,4 +12,5 @@ export interface AvatarUploadProps {
   value?: uploadValue;
   name?: string;
   onChange?: (imgUrl: uploadValue) => void;
+  id?: string;
 }
