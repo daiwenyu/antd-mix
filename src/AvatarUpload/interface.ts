@@ -4,8 +4,8 @@ import { ImgCropProps } from 'antd-img-crop';
 export declare type uploadValue = string | Array<string>;
 
 export interface AvatarUploadProps {
-  uploadProps: UploadProps;
-  imgCropProps: ImgCropProps | false;
+  uploadProps?: UploadProps;
+  imgCropProps?: ImgCropProps | false;
   response: (res: any) => string; // 获取返回数据图片url
   disabled?: boolean;
   size?: number;
