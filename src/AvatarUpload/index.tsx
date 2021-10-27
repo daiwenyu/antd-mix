@@ -137,7 +137,7 @@ export default function (props: AvatarUploadProps) {
       return;
     }
     if (info.file.status === 'done') {
-      const imgUrl = response(info.file.response);
+      const imgUrl = response?.(info.file.response) || '';
       setLoading(false);
       onChange?.(imgUrl);
       // setImageUrl(imgUrl);
