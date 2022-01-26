@@ -3,8 +3,8 @@ export const isWechat = window.navigator.userAgent
   .includes('micromessenger');
 
 interface WxSDKOption {
-  version: string;
-  debug: boolean;
+  version?: string;
+  debug?: boolean;
   appId: string;
   timestamp: string;
   nonceStr: string;
