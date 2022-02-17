@@ -53,3 +53,12 @@ export const downloadFile = (href: string) => {
   aEle.click();
   aEle.remove();
 };
+
+export const getUrlParams = (paramsStr?: string) => {
+  const searchParams = new URLSearchParams(paramsStr || window.location.search);
+  const params: any = {};
+  for (let v of searchParams.entries()) {
+    params[v[0]] = v[1];
+  }
+  return params;
+};
