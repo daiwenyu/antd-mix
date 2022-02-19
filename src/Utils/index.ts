@@ -1,4 +1,5 @@
-import { compressAccurately, compressAccuratelyConfig } from 'image-conversion';
+import type { compressAccuratelyConfig } from 'image-conversion';
+import { compressAccurately } from 'image-conversion';
 
 export const isWechat = window.navigator.userAgent
   .toLowerCase()
