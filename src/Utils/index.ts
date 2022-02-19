@@ -22,26 +22,41 @@ export const wxSDK = (option: WxSDKOption) => {
       signature,
       jsApiList,
     } = option;
-    const Script = document.createElement('script');
-    Script.type = 'text/javascript';
-    Script.src = `//res.wx.qq.com/open/js/jweixin-${version}.js`;
-    Script.onload = async () => {
-      try {
-        window.wx.config({
-          debug,
-          appId,
-          timestamp,
-          nonceStr,
-          signature,
-          jsApiList,
+    const scriptMap = document.getElementsByTagName('script');
+    const scriptList = Array.from(scriptMap);
+    const loadedWxSDK = scriptList.some((v) =>
+      v.src.includes('res.wx.qq.com/open/js/jweixin'),
+    );
+    const configWxSDK = () => {
+      wx.config({
+        debug,
+        appId,
+        timestamp,
+        nonceStr,
+        signature,
+        jsApiList,
+      });
+      wx.ready(function () {
+        resolve({ success: true });
+      });
+      wx.error(function (res: any) {
+        reject({
+          success: false,
+          message: res,
         });
-        return resolve(true);
-      } catch (e) {
-        console.log(e);
-        return reject(false);
-      }
+      });
     };
-    document.body.appendChild(Script);
+    if (loadedWxSDK === false) {
+      const Script = document.createElement('script');
+      Script.type = 'text/javascript';
+      Script.src = `//res.wx.qq.com/open/js/jweixin-${version}.js`;
+      Script.onload = () => {
+        configWxSDK();
+      };
+      document.body.appendChild(Script);
+    } else {
+      configWxSDK();
+    }
   });
 };
 
