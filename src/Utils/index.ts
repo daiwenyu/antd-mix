@@ -84,9 +84,4 @@ export const getUrlParams = (paramsStr?: string) => {
 export const compressImg = (
   file: Blob,
   config?: number | compressAccuratelyConfig | undefined,
-) => {
-  if (!file) {
-    return false;
-  }
-  return compressAccurately(file, config);
-};
+) => compressAccurately(file, config);
