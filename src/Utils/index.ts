@@ -1,3 +1,5 @@
+import { compressAccurately, compressAccuratelyConfig } from 'image-conversion';
+
 export const isWechat = window.navigator.userAgent
   .toLowerCase()
   .includes('micromessenger');
@@ -76,4 +78,14 @@ export const getUrlParams = (paramsStr?: string) => {
     params[v[0]] = v[1];
   }
   return params;
+};
+
+export const compressImg = (
+  file: Blob,
+  config?: number | compressAccuratelyConfig | undefined,
+) => {
+  if (!file) {
+    return false;
+  }
+  return compressAccurately(file, config);
 };
