@@ -13,32 +13,18 @@ interface WxSDKOption {
   nonceStr: string;
   signature: string;
   jsApiList: string[];
+  openTagList?: string[];
 }
 export const wxSDK = (option: WxSDKOption) => {
   return new Promise((resolve, reject) => {
-    const {
-      version = '1.6.0',
-      debug = false,
-      appId,
-      timestamp,
-      nonceStr,
-      signature,
-      jsApiList,
-    } = option;
+    const { version = '1.6.0', ...configOption } = option;
     const scriptMap = document.getElementsByTagName('script');
     const scriptList = Array.from(scriptMap);
     const loadedWxSDK = scriptList.some((v) =>
       v.src.includes('res.wx.qq.com/open/js/jweixin'),
     );
     const configWxSDK = () => {
-      wx.config({
-        debug,
-        appId,
-        timestamp,
-        nonceStr,
-        signature,
-        jsApiList,
-      });
+      wx.config({ ...configOption });
       wx.ready(function () {
         resolve({ success: true });
       });
