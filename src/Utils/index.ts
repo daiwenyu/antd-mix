@@ -6,7 +6,6 @@ export const isWechat = window.navigator.userAgent
   .includes('micromessenger');
 
 interface WxSDKOption {
-  version?: string;
   debug?: boolean;
   appId: string;
   timestamp: string;
@@ -17,35 +16,17 @@ interface WxSDKOption {
 }
 export const wxSDK = (option: WxSDKOption) => {
   return new Promise((resolve, reject) => {
-    const { version = '1.6.0', ...configOption } = option;
-    const scriptMap = document.getElementsByTagName('script');
-    const scriptList = Array.from(scriptMap);
-    const loadedWxSDK = scriptList.some((v) =>
-      v.src.includes('res.wx.qq.com/open/js/jweixin'),
-    );
-    const configWxSDK = () => {
-      wx.config({ ...configOption });
-      wx.ready(function () {
-        resolve({ success: true });
+    const { ...configOption } = option;
+    wx.config({ ...configOption });
+    wx.ready(function () {
+      resolve({ success: true });
+    });
+    wx.error(function (res: any) {
+      reject({
+        success: false,
+        message: res,
       });
-      wx.error(function (res: any) {
-        reject({
-          success: false,
-          message: res,
-        });
-      });
-    };
-    if (loadedWxSDK === false) {
-      const Script = document.createElement('script');
-      Script.type = 'text/javascript';
-      Script.src = `//res.wx.qq.com/open/js/jweixin-${version}.js`;
-      Script.onload = () => {
-        configWxSDK();
-      };
-      document.body.appendChild(Script);
-    } else {
-      configWxSDK();
-    }
+    });
   });
 };
 
