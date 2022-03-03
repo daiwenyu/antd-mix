@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { InputNumber, InputNumberProps } from 'antd';
 import './index.less';
 
@@ -7,10 +7,17 @@ interface DigitRangProps {
   minProps?: InputNumberProps;
   maxProps?: InputNumberProps;
   onChange?: (value: any) => void;
+  extra?: [any, any, any];
 }
 
 export default function (props: DigitRangProps) {
-  const { minProps, maxProps, value = [], onChange } = props;
+  const {
+    minProps,
+    maxProps,
+    value = [],
+    onChange,
+    extra = ['', '~', ''],
+  } = props;
   const onChangeNumber = (type: any, num: any) => {
     const newNum: any = [];
     if (type === 'min') {
@@ -26,19 +33,21 @@ export default function (props: DigitRangProps) {
 
   return (
     <div className="digitRangBox">
+      <div className="extra">{extra[0]}</div>
       <InputNumber
-        style={{ flex: 1 }}
+        className="inputNumber"
         {...minProps}
         value={value[0]}
         onChange={(min) => onChangeNumber('min', min)}
       />
-      <div className="digitRangDot">~</div>
+      <div className="extra">{extra[1]}</div>
       <InputNumber
-        style={{ flex: 1 }}
+        className="inputNumber"
         {...maxProps}
         value={value[1]}
         onChange={(max) => onChangeNumber('max', max)}
       />
+      <div className="extra">{extra[2]}</div>
     </div>
   );
 }
