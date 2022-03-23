@@ -8,7 +8,7 @@ export interface AvatarUploadProps {
   imgCropProps?: ImgCropProps | false;
   response?: (res: any) => string; // 获取返回数据图片url
   disabled?: boolean;
-  size?: number;
+  size?: number | [number | undefined, number | undefined];
   value?: uploadValue;
   name?: string;
   onChange?: (imgUrl: uploadValue) => void;

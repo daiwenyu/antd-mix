@@ -25,13 +25,32 @@ import './index.less';
 
 // 文件大小校验
 export const checkFileSize = (file: RcFile, size?: number) => {
-  if (typeof size === 'number') {
-    const { size: fileSize } = file;
-    if (typeof fileSize === 'number' && fileSize / 1024 > size) {
+  const { size: fileSize } = file;
+  if (typeof fileSize === 'number') {
+    if (typeof size === 'number' && fileSize / 1024 > size) {
       message.warning('文件超出大小限制');
       return false;
     }
+    if (Array.isArray(size) && size.length) {
+      const minSize = size[0];
+      const maxSize = size[1];
+      // const errmsgSingle = ``;
+      // const errmsgDouble = ``;
+      if (minSize && fileSize / 1024 < minSize) {
+        message.warning(
+          `文件需大于${minSize > 1024 ? `${minSize / 1024}m` : `${minSize}k`}`,
+        );
+        return false;
+      }
+      if (maxSize && fileSize / 1024 > maxSize) {
+        message.warning(
+          `文件需小于${minSize > 1024 ? `${minSize / 1024}m` : `${minSize}k`}`,
+        );
+        return false;
+      }
+    }
   }
+
   return true;
 };
 
