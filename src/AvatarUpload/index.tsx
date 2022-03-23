@@ -18,13 +18,14 @@ import { downloadFile } from '@/Utils/index';
 import 'antd/es/modal/style';
 import 'antd/es/slider/style';
 import 'antd/es/upload/style';
+import 'antd/es/image/style';
 import './index.less';
 
 // TODO 错误状态提示
 // 表单组件包裹时将错误信息推送至form显示
 
 // 文件大小校验
-export const checkFileSize = (file: RcFile, size?: number) => {
+export const checkFileSize = (file: RcFile, size: any) => {
   const { size: fileSize } = file;
   if (typeof fileSize === 'number') {
     if (typeof size === 'number' && fileSize / 1024 > size) {
@@ -112,7 +113,7 @@ function AvatarPreview(props: { src: any; onDelete: any; disabled: boolean }) {
           }}
         />
       </div>
-      <img src={src} alt="avatar" style={{ width: '100%' }} />
+      <img className="uploadedImg" src={src} alt="avatar" />
     </div>
   );
 }
