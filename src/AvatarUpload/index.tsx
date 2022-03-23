@@ -57,7 +57,6 @@ export const checkFileSize = (file: RcFile, size: any) => {
 
 // 文件类型校验
 export const checkFileType = (file: RcFile, accept: string) => {
-  console.log(file.type);
   if (!accept.includes(file.type)) {
     message.warning('文件类型有误');
     return false;
@@ -139,17 +138,22 @@ export default function (props: AvatarUploadProps) {
       return Promise.reject();
     }
 
-    // 大小校验
-    if (size && imgCropProps) {
-      // 通过剪裁的图片
-      // @ts-ignore 当使用图片剪裁插件且图片格式为png时，进行转码
-      file = await changeImgType(file, (size * 1024) / file.size);
+    // 设置了图片上下限制的图片文件大小校验
+    if (Array.isArray(size) && !checkFileSize(file, size)) {
+      return Promise.reject();
     }
 
-    if (size && !imgCropProps) {
-      // 无需剪裁的图片
-      if (!checkFileSize(file, size)) {
-        return Promise.reject();
+    // 仅设置了图片大小上限时文件大小校验
+    if (typeof size === 'number') {
+      if (imgCropProps) {
+        // 通过剪裁的图片
+        // @ts-ignore 当使用图片剪裁插件且图片格式为png时，进行转码
+        file = await changeImgType(file, (size * 1024) / file.size);
+      } else {
+        // 无需剪裁的图片
+        if (!checkFileSize(file, size)) {
+          return Promise.reject();
+        }
       }
     }
 

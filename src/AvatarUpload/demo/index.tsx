@@ -7,7 +7,7 @@ export default () => {
     <Form>
       <Form.Item name="avatar" label="头像" rules={[{ required: true }]}>
         <AvatarUpload
-          size={500}
+          size={[100, 500]}
           imgCropProps={{ aspect: 1 / 1 }}
           uploadProps={{
             accept: 'image/jpg,image/jpeg,image/png',
