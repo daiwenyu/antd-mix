@@ -14,7 +14,7 @@ import {
   RcFile,
   UploadChangeParam,
 } from 'antd/lib/upload/interface';
-import { downloadFile } from '@/Utils/index';
+import { downloadFile, compressImg } from '@/Utils/index';
 import 'antd/es/modal/style';
 import 'antd/es/slider/style';
 import 'antd/es/upload/style';
@@ -138,22 +138,21 @@ export default function (props: AvatarUploadProps) {
       return Promise.reject();
     }
 
-    // 设置了图片上下限制的图片文件大小校验
-    if (Array.isArray(size) && !checkFileSize(file, size)) {
-      return Promise.reject();
-    }
-
-    // 仅设置了图片大小上限时文件大小校验
-    if (typeof size === 'number') {
-      if (imgCropProps) {
-        // 通过剪裁的图片
-        // @ts-ignore 当使用图片剪裁插件且图片格式为png时，进行转码
-        file = await changeImgType(file, (size * 1024) / file.size);
-      } else {
-        // 无需剪裁的图片
-        if (!checkFileSize(file, size)) {
-          return Promise.reject();
-        }
+    if (imgCropProps) {
+      let imgMaxSize = size;
+      if (Array.isArray(size)) {
+        imgMaxSize = size[1];
+      }
+      // {
+      //   size: 500,
+      // }
+      if (imgMaxSize) {
+        // @ts-ignore
+        file = await compressImg(file, imgMaxSize);
+      }
+    } else {
+      if (!checkFileSize(file, size)) {
+        return Promise.reject();
       }
     }
 
