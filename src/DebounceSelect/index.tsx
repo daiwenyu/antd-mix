@@ -16,7 +16,6 @@ export default function DebounceSelect<
     value: string | number;
   } = any,
 >({ fetchOptions, debounceTimeout = 800, ...props }: DebounceSelectProps) {
-  const { value } = props;
   const [fetching, setFetching] = React.useState(false);
   const [options, setOptions] = React.useState<ValueType[]>([]);
   const fetchRef = React.useRef(0);

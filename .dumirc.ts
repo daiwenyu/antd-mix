@@ -1,8 +1,9 @@
 import { defineConfig } from 'dumi';
+import path from 'path';
 
 export default defineConfig({
   outputPath: 'docs-dist',
-  themeConfig: {
-    name: 'antd-mix',
+  alias: {
+    'antd-mix': path.resolve(__dirname, 'src'),
   },
 });

@@ -7,15 +7,20 @@ import {
 } from '@ant-design/icons';
 import { Image, message, Upload } from 'antd';
 import ImgCrop from 'antd-img-crop';
-import { compressImg, downloadFile } from 'antd-mix/Utils';
 import 'antd/es/image/style';
 import 'antd/es/modal/style';
 import 'antd/es/slider/style';
 import 'antd/es/upload/style';
 import { RcFile, UploadChangeParam } from 'antd/lib/upload/interface';
 import React, { useEffect, useState } from 'react';
+import { compressImg, downloadFile } from '../Utils';
 import './index.less';
 import { AvatarUploadProps } from './interface';
+
+(async function a() {
+  const res = await import('antd-mix');
+  console.log('res', res);
+})();
 
 // TODO 错误状态提示
 // 表单组件包裹时将错误信息推送至form显示
@@ -60,26 +65,26 @@ export const checkFileType = (file: RcFile, accept: string) => {
   return true;
 };
 
-const changeImgType = (file: RcFile, encoderOptions = 1) => {
-  return new Promise((resolve) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => {
-      const img = document.createElement('img');
-      // @ts-ignore
-      img.src = reader.result;
-      img.onload = () => {
-        const canvas = document.createElement('canvas');
-        canvas.width = img.naturalWidth;
-        canvas.height = img.naturalHeight;
-        const ctx = canvas.getContext('2d');
-        // @ts-ignore
-        ctx.drawImage(img, 0, 0);
-        canvas.toBlob(resolve, 'image/jpeg', encoderOptions);
-      };
-    };
-  });
-};
+// const changeImgType = (file: RcFile, encoderOptions = 1) => {
+//   return new Promise((resolve) => {
+//     const reader = new FileReader();
+//     reader.readAsDataURL(file);
+//     reader.onload = () => {
+//       const img = document.createElement('img');
+//       // @ts-ignore
+//       img.src = reader.result;
+//       img.onload = () => {
+//         const canvas = document.createElement('canvas');
+//         canvas.width = img.naturalWidth;
+//         canvas.height = img.naturalHeight;
+//         const ctx = canvas.getContext('2d');
+//         // @ts-ignore
+//         ctx.drawImage(img, 0, 0);
+//         canvas.toBlob(resolve, 'image/jpeg', encoderOptions);
+//       };
+//     };
+//   });
+// };
 
 function AvatarPreview(props: { src: any; onDelete: any; disabled: boolean }) {
   const [visible, setVisible] = useState(false);
@@ -128,7 +133,7 @@ export default function (props: AvatarUploadProps) {
   const [loading, setLoading] = useState(false);
   const [imageUrl, setImageUrl] = useState<string | undefined>('');
 
-  const handleBeforeUpload = async (file: RcFile, fileList: RcFile[]) => {
+  const handleBeforeUpload = async (file: RcFile) => {
     // 文件类型校验
     if (uploadProps.accept && !checkFileType(file, uploadProps.accept)) {
       return Promise.reject();
@@ -144,6 +149,7 @@ export default function (props: AvatarUploadProps) {
       // }
       if (imgMaxSize) {
         // @ts-ignore
+        // eslint-disable-next-line no-param-reassign
         file = await compressImg(file, imgMaxSize);
       }
     } else {
