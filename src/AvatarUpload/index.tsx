@@ -7,20 +7,16 @@ import {
 } from '@ant-design/icons';
 import { Image, message, Upload } from 'antd';
 import ImgCrop from 'antd-img-crop';
-import 'antd/es/image/style';
-import 'antd/es/modal/style';
-import 'antd/es/slider/style';
-import 'antd/es/upload/style';
 import { RcFile, UploadChangeParam } from 'antd/lib/upload/interface';
 import React, { useEffect, useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 import { compressImg, downloadFile } from '../Utils';
 import './index.less';
 import { AvatarUploadProps } from './interface';
-
-(async function a() {
-  const res = await import('antd-mix');
-  console.log('res', res);
-})();
+// import 'antd/es/image/style';
+// import 'antd/es/modal/style';
+// import 'antd/es/slider/style';
+// import 'antd/es/upload/style';
 
 // TODO 错误状态提示
 // 表单组件包裹时将错误信息推送至form显示
@@ -65,27 +61,6 @@ export const checkFileType = (file: RcFile, accept: string) => {
   return true;
 };
 
-// const changeImgType = (file: RcFile, encoderOptions = 1) => {
-//   return new Promise((resolve) => {
-//     const reader = new FileReader();
-//     reader.readAsDataURL(file);
-//     reader.onload = () => {
-//       const img = document.createElement('img');
-//       // @ts-ignore
-//       img.src = reader.result;
-//       img.onload = () => {
-//         const canvas = document.createElement('canvas');
-//         canvas.width = img.naturalWidth;
-//         canvas.height = img.naturalHeight;
-//         const ctx = canvas.getContext('2d');
-//         // @ts-ignore
-//         ctx.drawImage(img, 0, 0);
-//         canvas.toBlob(resolve, 'image/jpeg', encoderOptions);
-//       };
-//     };
-//   });
-// };
-
 function AvatarPreview(props: { src: any; onDelete: any; disabled: boolean }) {
   const [visible, setVisible] = useState(false);
   const { src, onDelete, disabled } = props;
@@ -127,9 +102,9 @@ export default function (props: AvatarUploadProps) {
     response,
     imgCropProps,
     uploadProps,
-    id,
   } = props;
 
+  const [id] = useState(uuidv4());
   const [loading, setLoading] = useState(false);
   const [imageUrl, setImageUrl] = useState<string | undefined>('');
 
@@ -183,12 +158,6 @@ export default function (props: AvatarUploadProps) {
 
   // @ts-ignore
   useEffect(() => setImageUrl(value), [value]);
-
-  // useEffect(() => {
-  //   if (imageUrl) {
-  //     onChange?.(imageUrl);
-  //   }
-  // }, [imageUrl]);
 
   return (
     <div id={id}>
