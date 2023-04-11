@@ -1,7 +1,7 @@
 ---
 hero:
-  title: MIX
-  description: 
+  title: ANTD-MIX
+  description: antd-mix
   actions:
     - text: Hello
       link: /guide
@@ -18,5 +18,3 @@ features:
     emoji: 🚀
     description: Put ! description here
 ---
-
-antd-mix

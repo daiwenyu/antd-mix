@@ -45,6 +45,7 @@
     ]
   },
   "dependencies": {
+    "@amap/amap-jsapi-loader": "^1.0.1",
     "antd": "^5.4.0",
     "antd-img-crop": "^4.12.2",
     "image-conversion": "^2.1.1",
