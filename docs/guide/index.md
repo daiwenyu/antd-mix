@@ -1,7 +1,8 @@
 ---
+title: antd-mix指南
 nav:
   title: 指南
-title: 什么是antd-mix
+  order: 1
 group:
   title: 介绍
 ---

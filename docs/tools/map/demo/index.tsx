@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import AMapLoader from "@amap/amap-jsapi-loader";
-import { shanghai, rizhao, qingdao } from "./utils/markerData";
+import { shanghai, rizhao, qingdao } from "./markerData";
 import { v4 as uuidv4 } from "uuid";
 import "./index.less";
 
