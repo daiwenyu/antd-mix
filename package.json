@@ -45,18 +45,19 @@
     ]
   },
   "dependencies": {
-    "@amap/amap-jsapi-loader": "^1.0.1",
-    "antd": "^5.4.1",
+    "antd": "^5.4.2",
     "antd-img-crop": "^4.12.2",
     "image-conversion": "^2.1.1",
     "lodash": "^4.17.21",
-    "react-json-view": "^1.21.3",
     "uuid": "^9.0.0"
   },
   "devDependencies": {
+    "@amap/amap-jsapi-loader": "^1.0.1",
     "@commitlint/cli": "^17.5.1",
     "@commitlint/config-conventional": "^17.4.4",
     "@types/lodash": "^4.14.192",
+    "@types/react": "^18.0.34",
+    "@types/react-dom": "^18.0.11",
     "@types/uuid": "^9.0.1",
     "@umijs/lint": "^4.0.64",
     "dumi": "^2.1.19",
