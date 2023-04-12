@@ -1,12 +1,12 @@
-import React, { useEffect } from 'react';
 import { DebounceSelect } from 'antd-mix';
+import React from 'react';
 
 interface UserValue {
   label: string;
   value: string;
 }
 
-async function fetchUserList(username: string): Promise<UserValue[]> {
+async function fetchUserList(): Promise<UserValue[]> {
   // console.log('fetching user', username);
   return fetch('https://randomuser.me/api/?results=5')
     .then((response) => response.json())

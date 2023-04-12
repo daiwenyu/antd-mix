@@ -7,7 +7,7 @@ const { TextArea } = Input;
 function StrFormat() {
   const [form] = Form.useForm();
 
-  const formatEnv = (envStr: string) => {
+  const formatEnv = (envStr: string): { [key: string]: string } => {
     const envObj = {};
     envStr
       .trim()
@@ -30,10 +30,7 @@ function StrFormat() {
     const envObj = formatEnv(envStr);
     let result = confStr;
     Object.keys(envObj).forEach((key) => {
-      result = result.replace(
-        new RegExp(`process.env.${key}`, 'g'),
-        envObj[key],
-      );
+      result = result.replaceAll(`process.env.${key}`, envObj[key]);
     });
     form.setFieldsValue({ formatData: result });
   };

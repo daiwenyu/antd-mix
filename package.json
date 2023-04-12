@@ -45,6 +45,7 @@
     ]
   },
   "dependencies": {
+    "@ant-design/icons": "^5.0.1",
     "antd": "^5.4.2",
     "antd-img-crop": "^4.12.2",
     "image-conversion": "^2.1.1",
@@ -70,7 +71,8 @@
     "prettier-plugin-packagejson": "^2.4.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "stylelint": "^15.4.0"
+    "stylelint": "^15.4.0",
+    "typescript": "^5.0.4"
   },
   "peerDependencies": {
     "react": ">=16.9.0",
