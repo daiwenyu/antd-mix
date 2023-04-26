@@ -1,12 +1,14 @@
 {
   "name": "antd-mix",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "",
   "license": "MIT",
-  "module": "dist/index.js",
-  "types": "dist/types.d.ts",
+  "main": "lib/index.js",
+  "module": "es/index.js",
+  "types": "es/index.d.ts",
   "files": [
-    "dist"
+    "es",
+    "lib"
   ],
   "scripts": {
     "build": "father build",
@@ -45,8 +47,7 @@
     ]
   },
   "dependencies": {
-    "@ant-design/icons": "^5.0.1",
-    "antd": "^5.4.5",
+    "@babel/runtime": "^7.21.0",
     "antd-img-crop": "^4.12.2",
     "image-conversion": "^2.1.1",
     "lodash": "^4.17.21",
@@ -57,12 +58,13 @@
     "@commitlint/cli": "^17.6.1",
     "@commitlint/config-conventional": "^17.6.1",
     "@types/lodash": "^4.14.194",
-    "@types/react": "^18.0.38",
-    "@types/react-dom": "^18.0.11",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.1",
     "@types/uuid": "^9.0.1",
     "@umijs/lint": "^4.0.66",
+    "antd": "^5.4.5",
     "cross-env": "^7.0.3",
-    "dumi": "^2.1.21",
+    "dumi": "^2.1.22",
     "eslint": "^8.39.0",
     "father": "^4.1.9",
     "husky": "^8.0.3",
@@ -76,11 +78,15 @@
     "typescript": "^5.0.4"
   },
   "peerDependencies": {
+    "@ant-design/icons": ">=5.0.0",
+    "antd": ">=5.0.0",
     "react": ">=16.9.0",
     "react-dom": ">=16.9.0"
   },
   "publishConfig": {
     "access": "public"
   },
-  "authors": []
+  "authors": [
+    "daiwenyu <wenyu.dai@qq.com> (https://github.com/daiwenyu)"
+  ]
 }
