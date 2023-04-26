@@ -63,3 +63,13 @@ export const compressImg = (
   file: Blob,
   config?: number | compressAccuratelyConfig | undefined,
 ) => compressAccurately(file, config);
+
+export const AsyncFn = (fn, ...args) => {
+  return new Promise((resolve) => {
+    if (args.length > 0) {
+      fn(...args, resolve);
+    } else {
+      fn(resolve);
+    }
+  });
+};

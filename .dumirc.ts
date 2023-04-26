@@ -8,7 +8,11 @@ export default defineConfig({
   },
   themeConfig: {
     name: 'antd-mix',
-    footer: false,
+    footer: `
+    <div>
+      <a href="https://beian.miit.gov.cn/" target="_blank">滇ICP备16002561号-1</a>
+    </div>
+    `,
   },
   headScripts: [
     `
