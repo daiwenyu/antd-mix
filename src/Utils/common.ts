@@ -8,3 +8,16 @@ export const promisify = (fn: (...params: any[]) => void, ...args: any[]) => {
     }
   });
 };
+
+/**
+ * 将数组内某个字段的值转换为对象组
+ * @param array
+ * @param key
+ * @returns
+ */
+export function arrayToObj(array: any[], key: string) {
+  return array.reduce((obj, item) => {
+    obj[item[key]] = item;
+    return obj;
+  }, {});
+}
