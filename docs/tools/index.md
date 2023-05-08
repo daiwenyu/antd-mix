@@ -7,8 +7,11 @@ group:
   title: 介绍
 ---
 
-常用工具包
+# 文件目录结构
 
+<!-- 常用工具包 -->
+
+```
 nodejs
 ├── package.json
 ├── README.md
@@ -59,3 +62,4 @@ nodejs
 ├── test （单元测试）
 │   ├── app.e2e-spec.ts
 ├── tsconfig.json
+```
