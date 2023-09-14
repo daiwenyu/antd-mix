@@ -1,11 +1,11 @@
 import type { compressAccuratelyConfig } from 'image-conversion';
 import { compressAccurately } from 'image-conversion';
 
-export const downloadFile = (href: string) => {
+export const downloadFile = (href: string, fileName?: string) => {
   const aEle = document.createElement('a');
   aEle.target = '_blank';
   aEle.href = href;
-  aEle.download = '';
+  aEle.download = fileName || '';
   aEle.click();
   aEle.remove();
 };
