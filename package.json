@@ -3,12 +3,10 @@
   "version": "1.0.2",
   "description": "",
   "license": "MIT",
-  "main": "lib/index.js",
-  "module": "es/index.js",
-  "types": "es/index.d.ts",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
   "files": [
-    "es",
-    "lib"
+    "dist"
   ],
   "scripts": {
     "build": "father build",
@@ -47,35 +45,33 @@
     ]
   },
   "dependencies": {
-    "@babel/runtime": "^7.22.15",
-    "antd-img-crop": "^4.13.0",
+    "antd-img-crop": "^4.21.0",
     "image-conversion": "^2.1.1",
     "lodash": "^4.17.21",
     "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@amap/amap-jsapi-loader": "^1.0.1",
-    "@commitlint/cli": "^17.7.1",
-    "@commitlint/config-conventional": "^17.7.0",
-    "@types/lodash": "^4.14.199",
-    "@types/react": "^18.2.22",
-    "@types/react-dom": "^18.2.7",
-    "@types/uuid": "^9.0.4",
-    "@umijs/lint": "^4.0.81",
-    "antd": "^5.9.2",
+    "@commitlint/cli": "^17.8.1",
+    "@commitlint/config-conventional": "^17.8.1",
+    "@types/lodash": "^4.14.202",
+    "@types/react": "^18.2.57",
+    "@types/react-dom": "^18.2.19",
+    "@types/uuid": "^9.0.8",
+    "@umijs/lint": "^4.1.2",
+    "antd": "^5.14.1",
     "cross-env": "^7.0.3",
-    "dumi": "^2.2.10",
-    "eslint": "^8.50.0",
-    "father": "^4.3.5",
+    "dumi": "^2.2.17",
+    "eslint": "^8.56.0",
+    "father": "^4.4.0",
     "husky": "^8.0.3",
     "lint-staged": "^14.0.1",
-    "prettier": "^3.0.3",
-    "prettier-plugin-organize-imports": "^3.2.3",
-    "prettier-plugin-packagejson": "^2.4.5",
+    "prettier": "^3.2.5",
+    "prettier-plugin-organize-imports": "^3.2.4",
+    "prettier-plugin-packagejson": "^2.4.12",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "stylelint": "^15.10.3",
-    "typescript": "^5.2.2"
+    "stylelint": "^15.11.0"
   },
   "peerDependencies": {
     "@ant-design/icons": ">=5.0.0",

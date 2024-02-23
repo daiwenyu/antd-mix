@@ -7,36 +7,10 @@
     "jsx": "react",
     "baseUrl": "./",
     "paths": {
-      "@@/*": [
-        ".dumi/tmp/*"
-      ],
-      "test": [
-        "src"
-      ],
-      "test/*": [
-        "src/*",
-        "*"
-      ],
-      "antd-mix": [
-        "src"
-      ]
-    },
-    "target": "ES6",
-    "module": "ESNext",
-    "moduleResolution": "node",
-    "strictNullChecks": true,
-    "experimentalDecorators": true,
-    "noUnusedParameters": true,
-    "noUnusedLocals": true,
-    "noImplicitAny": true,
-    "lib": [
-      "dom",
-      "ES2022"
-    ]
+      "@@/*": [".dumi/tmp/*"],
+      "antd-mix": ["src"],
+      "antd-mix/*": ["src/*", "*"]
+    }
   },
-  "include": [
-    ".dumirc.ts",
-    "src/**/*",
-    "docs/**/*"
-  ]
+  "include": [".dumirc.ts", "src/**/*", "docs/**/*"]
 }
