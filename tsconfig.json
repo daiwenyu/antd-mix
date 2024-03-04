@@ -10,7 +10,9 @@
       "@@/*": [".dumi/tmp/*"],
       "antd-mix": ["src"],
       "antd-mix/*": ["src/*", "*"]
-    }
+    },
+    "target": "ES2015",
+    "module": "NodeNext"
   },
   "include": [".dumirc.ts", "src/**/*", "docs/**/*"]
 }
