@@ -1,6 +1,14 @@
 import { promisify } from './common';
-import { compressImg, downloadFile } from './file';
+import { checkFileType, compressImg, downloadFile } from './file';
 import { getUrlParams } from './url';
 import { isWechat, wxSDK } from './wx';
 
-export { promisify, downloadFile, compressImg, getUrlParams, isWechat, wxSDK };
+export {
+  checkFileType,
+  compressImg,
+  downloadFile,
+  getUrlParams,
+  isWechat,
+  promisify,
+  wxSDK,
+};

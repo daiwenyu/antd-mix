@@ -1,6 +1,6 @@
 {
   "name": "antd-mix",
-  "version": "2.0.0",
+  "version": "2.0.2",
   "description": "",
   "license": "MIT",
   "module": "dist/index.js",
@@ -50,9 +50,9 @@
   "devDependencies": {
     "@commitlint/cli": "^17.8.1",
     "@commitlint/config-conventional": "^17.8.1",
-    "@types/react": "^18.2.61",
-    "@types/react-dom": "^18.2.19",
-    "@umijs/lint": "^4.1.2",
+    "@types/react": "^18.2.75",
+    "@types/react-dom": "^18.2.24",
+    "@umijs/lint": "^4.1.8",
     "dumi": "^2.2.17",
     "eslint": "^8.57.0",
     "father": "^4.4.0",
@@ -60,7 +60,7 @@
     "lint-staged": "^14.0.1",
     "prettier": "^3.2.5",
     "prettier-plugin-organize-imports": "^3.2.4",
-    "prettier-plugin-packagejson": "^2.4.12",
+    "prettier-plugin-packagejson": "^2.4.14",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "stylelint": "^15.11.0"
