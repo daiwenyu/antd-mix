@@ -4,7 +4,7 @@ hero:
   description: antd-mix
   actions:
     - text: Hello
-      link: /guide
+      link: /
     - text: World
       link: /
 features:

@@ -40,8 +40,11 @@ async function addWxSDK() {
 
 ## API
 
-| 属性         | 说明                   | 类型                      | 默认值 | 版本 |
-| :----------- | :--------------------- | :------------------------ | :----- | :--- |
-| isWechat     | 判断当前是否为微信环境 | boolean                   |        |      |
-| wxSDK        | 加载微信 JS-SDK        | (option)=>Promise<object> |        |      |
-| downloadFile | 下载文件               | (href: string)=>void      |        |      |
+| 属性         | 说明                   | 类型                 | 默认值 | 版本 |
+| :----------- | :--------------------- | :------------------- | :----- | :--- |
+| isWechat     | 判断当前是否为微信环境 | boolean              |        |      |
+| wxSDK        | 加载微信 JS-SDK        | (option)=>Promise    |        |      |
+| downloadFile | 下载文件               | (href: string)=>void |        |      |
+
+
+<code src="./demos/utils.tsx" only></code>

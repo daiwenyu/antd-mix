@@ -21,3 +21,17 @@ export function arrayToObj(array: any[], key: string) {
     return obj;
   }, {});
 }
+
+/**
+ * 检测当前浏览器内核版本是否大于等于指定的Chrome内核版本
+ * @param minVersion 指定的Chrome内核版本
+ * @returns 是否大于等于指定版本
+ */
+export function checkChromeVersion(minVersion: number) {
+  const ua = navigator.userAgent.toLowerCase();
+  const chromeVersion = ua.match(/chrom(e|ium)\/([0-9]+)\./);
+  if (chromeVersion && chromeVersion[2]) {
+    return parseInt(chromeVersion[2], 10) >= minVersion;
+  }
+  return false;
+}
