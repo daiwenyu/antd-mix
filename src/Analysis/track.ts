@@ -3,17 +3,16 @@ declare global {
     [Track.key]: TrackConfig;
     Track?: Track;
   }
-
-  interface TrackConfig {
-    // 接受埋点数据的接口地址
-    serverUrl: string;
-    // 是否开启调试模式
-    debug?: boolean;
-    // 是否自动上报错误信息，默认不上报
-    autoReportError?: boolean;
-    // 当前用户信息
-    userProfile?: UserProfile;
-  }
+}
+export interface TrackConfig {
+  // 接受埋点数据的接口地址
+  serverUrl: string;
+  // 是否开启调试模式
+  debug?: boolean;
+  // 是否自动上报错误信息，默认不上报
+  autoReportError?: boolean;
+  // 当前用户信息
+  userProfile?: UserProfile;
 }
 
 // 用户信息

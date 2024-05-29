@@ -7,7 +7,7 @@ const { Text } = Typography;
 const { Track } = Analysis;
 
 Track.init({
-  serverUrl: 'http://localhost:3000/analysis/track',
+  serverUrl: `${GOOCCBY}/analysis/track`,
   debug: true,
   autoReportError: true,
 });
@@ -104,7 +104,7 @@ export default () => {
         columns={columns}
         scroll={{ x: 'max-content' }}
         request={async () => {
-          const res = await fetch('http://localhost:3000/analysis/getAll');
+          const res = await fetch(`${GOOCCBY}/analysis/getAll`);
           const data = await res.json();
           return {
             success: true,
