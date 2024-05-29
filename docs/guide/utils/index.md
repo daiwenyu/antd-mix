@@ -1,7 +1,7 @@
 ---
 title: Utils 工具类
 group:
-  title: 函数集合
+  title: 工具函数集合
   order: 2
 ---
 
