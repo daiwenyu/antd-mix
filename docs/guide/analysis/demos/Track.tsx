@@ -26,6 +26,11 @@ export default () => {
       align: 'center',
     },
     {
+      title: '页面路径',
+      dataIndex: ['systemProfile', 'href'],
+      // align: 'center',
+    },
+    {
       title: '是否为移动设备',
       dataIndex: ['systemProfile', 'isMobile'],
       align: 'center',
@@ -91,25 +96,39 @@ export default () => {
   ];
   return (
     <Space direction="vertical" style={{ display: 'flex' }}>
-      <Button
-        onClick={() => {
-          // JSON.parse('{"a": 1}123');
-          Track.push({ type: 'click', a: 2 });
-        }}
-      >
-        点击
-      </Button>
+      <Space>
+        <Button
+          onClick={() => {
+            // JSON.parse('{"a": 1}123');
+            Track.push({ type: 'click', a: 2 });
+          }}
+        >
+          事件上报
+        </Button>
+        <Button
+          danger
+          onClick={() => {
+            JSON.parse('{"a": 1}123');
+          }}
+        >
+          错误上报
+        </Button>
+      </Space>
+
       <ProTable
         rowKey="_id"
         columns={columns}
         scroll={{ x: 'max-content' }}
-        request={async () => {
-          const res = await fetch(`${GOOCCBY}/analysis/getAll`);
-          const data = await res.json();
+        request={async (params) => {
+          const res = await fetch(
+            `${GOOCCBY}/analysis/getAll?${new URLSearchParams(params)}`,
+          );
+          const { data = [], total = 0 } = (await res.json()) || {};
+          console.log(data);
           return {
             success: true,
             data,
-            total: data?.length || 0,
+            total,
           };
         }}
       />
