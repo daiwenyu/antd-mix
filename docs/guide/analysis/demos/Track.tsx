@@ -30,25 +30,24 @@ export default () => {
       dataIndex: ['systemProfile', 'href'],
       // align: 'center',
     },
-    {
-      title: '是否为移动设备',
-      dataIndex: ['systemProfile', 'isMobile'],
-      align: 'center',
-      // valueType:'switch',
-      render(dom, entity, index, action, schema) {
-        return entity.systemProfile?.isMobile ? '是' : '否';
-      },
-    },
-    {
-      title: '设备平台',
-      dataIndex: ['systemProfile', 'platform'],
-      align: 'center',
-    },
-    {
-      title: '设备型号',
-      dataIndex: ['systemProfile', 'model'],
-      align: 'center',
-    },
+    // {
+    //   title: '是否为移动设备',
+    //   dataIndex: ['systemProfile', 'isMobile'],
+    //   align: 'center',
+    //   render(dom, entity, index, action, schema) {
+    //     return entity.systemProfile?.isMobile ? '是' : '否';
+    //   },
+    // },
+    // {
+    //   title: '设备平台',
+    //   dataIndex: ['systemProfile', 'platform'],
+    //   align: 'center',
+    // },
+    // {
+    //   title: '设备型号',
+    //   dataIndex: ['systemProfile', 'model'],
+    //   align: 'center',
+    // },
     {
       title: 'IP',
       dataIndex: ['systemProfile', 'ip'],
