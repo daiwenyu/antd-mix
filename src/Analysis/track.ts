@@ -29,7 +29,7 @@ export interface UserProfile {
 // 系统信息
 export interface SystemProfile {
   // 当前操作系统及浏览器信息
-  userAgent: string;
+  // userAgent: string;
   // 视口高度
   innerHeight: number;
   // 视口宽度
@@ -114,7 +114,7 @@ export class Track {
     return {
       innerHeight: window.innerHeight,
       innerWidth: window.innerWidth,
-      userAgent: navigator.userAgent,
+      // userAgent: navigator.userAgent,
       href: location.href,
       time: Date.now(),
     };

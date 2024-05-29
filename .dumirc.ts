@@ -19,4 +19,10 @@ export default defineConfig({
     })(window, document, "clarity", "script", "mihjfy3yk6");
     `,
   ],
+  define: {
+    GOOCCBY:
+      process.env.NODE_ENV === 'production'
+        ? 'https://gooccby.com'
+        : 'http://localhost:3000',
+  },
 });

@@ -1,6 +1,6 @@
 {
   "name": "antd-mix",
-  "version": "2.0.4",
+  "version": "2.1.1",
   "description": "",
   "license": "MIT",
   "module": "dist/index.js",
@@ -48,6 +48,7 @@
     "image-conversion": "^2.1.1"
   },
   "devDependencies": {
+    "@ant-design/pro-components": "^2.7.9",
     "@commitlint/cli": "^19.3.0",
     "@commitlint/config-conventional": "^19.2.2",
     "@types/react": "^18.3.3",
