@@ -22,7 +22,7 @@ export default defineConfig({
   define: {
     GOOCCBY:
       process.env.NODE_ENV === 'production'
-        ? 'https://gooccby.com'
+        ? 'https://venus.gooccby.com'
         : 'http://localhost:3000',
   },
 });
