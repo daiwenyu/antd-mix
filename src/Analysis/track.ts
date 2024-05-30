@@ -71,13 +71,11 @@ export class Track {
   static async send(data: any = {}) {
     const config = window[Track.key];
     this.checkConfig(config);
-
     await fetch(config.serverUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      // mode: 'cors',
       body: JSON.stringify({
         ...data,
         systemProfile: this.getSystemProfile(),
@@ -101,7 +99,6 @@ export class Track {
     if (autoReportError) {
       // 短时间内推送超过10个错误，关闭监听
       window.addEventListener('error', (event) => {
-        console.log('error', event);
         const { message, filename } = event;
         const errorProfile: ErrorProfile = {
           message,

@@ -57,6 +57,7 @@
     "@types/react-dom": "^18.3.0",
     "@umijs/lint": "^4.2.5",
     "antd": "^5.17.4",
+    "bowser": "^2.11.0",
     "dumi": "^2.3.4",
     "eslint": "^9.3.0",
     "father": "^4.4.1",

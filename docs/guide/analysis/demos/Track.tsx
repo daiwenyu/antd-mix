@@ -1,8 +1,10 @@
 import { ProColumns, ProTable } from '@ant-design/pro-components';
 import { Button, Space, Tooltip, Typography } from 'antd';
-import { Analysis } from 'antd-mix';
+import { Analysis, Utils } from 'antd-mix';
+import Bowser from 'bowser';
 import React from 'react';
 
+const { generateRandomString } = Utils;
 const { Text } = Typography;
 const { Track } = Analysis;
 
@@ -17,63 +19,65 @@ export default () => {
     {
       title: '设备序列号',
       dataIndex: ['systemProfile', 'IMEI'],
+      fixed: 'left',
+      width: 160,
     },
     {
       title: '生成时间',
       dataIndex: ['systemProfile', 'time'],
       valueType: 'dateTime',
       align: 'center',
+      fixed: 'left',
+      width: 170,
     },
     {
-      title: '用户信息',
-      dataIndex: ['userProfile', 'name'],
+      title: '账号',
+      dataIndex: ['userProfile', 'id'],
+      align: 'center',
+    },
+    {
+      title: '用户名',
+      dataIndex: ['userProfile', 'userName'],
+      align: 'center',
+    },
+    {
+      title: '邮箱',
+      dataIndex: ['userProfile', 'email'],
       align: 'center',
     },
     {
       title: '页面路径',
       dataIndex: ['systemProfile', 'href'],
-      // align: 'center',
     },
-    // {
-    //   title: '是否为移动设备',
-    //   dataIndex: ['systemProfile', 'isMobile'],
-    //   align: 'center',
-    //   render(dom, entity, index, action, schema) {
-    //     return entity.systemProfile?.isMobile ? '是' : '否';
-    //   },
-    // },
-    // {
-    //   title: '设备平台',
-    //   dataIndex: ['systemProfile', 'platform'],
-    //   align: 'center',
-    // },
-    // {
-    //   title: '设备型号',
-    //   dataIndex: ['systemProfile', 'model'],
-    //   align: 'center',
-    // },
-    // {
-    //   title: 'IP',
-    //   dataIndex: ['systemProfile', 'ip'],
-    //   align: 'center',
-    // },
+    {
+      title: '事件类型',
+      dataIndex: ['eventProfile', 'type'],
+      align: 'center',
+      valueEnum: {
+        click: '点击',
+        view: '浏览',
+      },
+    },
     {
       title: '事件数据',
       dataIndex: 'eventProfile',
+      hideInSearch: true,
       render(dom, entity, index, action, schema) {
-        return (
-          <Tooltip title={JSON.stringify(entity.eventProfile)}>
-            <Text style={{ width: 200 }} ellipsis>
-              {JSON.stringify(entity.eventProfile)}
-            </Text>
-          </Tooltip>
-        );
+        if (!entity.eventProfile) {
+          return '-';
+        }
+        const { type, ...rest } = entity?.eventProfile || {};
+        return JSON.stringify(rest);
       },
     },
     {
       title: '报错信息',
       dataIndex: 'errorProfile',
+      hideInSearch: true,
       render(dom, entity, index, action, schema) {
+        if (!entity.errorProfile) {
+          return '-';
+        }
         return (
           <Tooltip title={JSON.stringify(entity.errorProfile)}>
             <Text style={{ width: 200 }} ellipsis>
@@ -84,8 +88,22 @@ export default () => {
       },
     },
     {
+      title: '浏览器信息',
+      dataIndex: ['systemProfile', 'browser'],
+      align: 'center',
+    },
+    {
+      title: '设备平台',
+      dataIndex: ['systemProfile', 'platform'],
+    },
+    {
+      title: '设备系统',
+      dataIndex: ['systemProfile', 'os'],
+    },
+    {
       title: 'UserAgent',
       dataIndex: ['systemProfile', 'userAgent'],
+      hideInSearch: true,
       render(dom, entity, index, action, schema) {
         return (
           <Tooltip title={entity.systemProfile.userAgent}>
@@ -102,8 +120,26 @@ export default () => {
       <Space>
         <Button
           onClick={() => {
-            // JSON.parse('{"a": 1}123');
-            Track.push({ type: 'click', a: 2 });
+            Track.setUserProfile({
+              id: '123321',
+              userName: '张三',
+              email: 'dwy@qq.com',
+            });
+          }}
+        >
+          设置登录用户
+        </Button>
+        <Button
+          onClick={() => {
+            const data: any = {};
+            for (let i = 0; i < Math.ceil(Math.random() * 3); i++) {
+              data[generateRandomString(Math.ceil(Math.random() * 8))] =
+                generateRandomString(Math.random() * 8);
+            }
+            Track.push({
+              type: 'click',
+              ...data,
+            });
           }}
         >
           事件上报
@@ -111,16 +147,18 @@ export default () => {
         <Button
           danger
           onClick={() => {
-            JSON.parse('{"a": 1}123');
+            JSON.parse('{123}');
           }}
         >
-          错误上报
+          自动上报错误
         </Button>
       </Space>
 
       <ProTable
         rowKey="_id"
+        bordered
         columns={columns}
+        size="small"
         scroll={{ x: 'max-content' }}
         pagination={{
           defaultPageSize: 10,
@@ -134,7 +172,18 @@ export default () => {
           const { data = [], total = 0 } = (await res.json()) || {};
           return {
             success: true,
-            data,
+            data: data.map((item: any) => {
+              const browserInfo = Bowser.parse(item.systemProfile.userAgent);
+              return {
+                ...item,
+                systemProfile: {
+                  ...item.systemProfile,
+                  os: JSON.stringify(browserInfo.os),
+                  browser: JSON.stringify(browserInfo.browser),
+                  platform: JSON.stringify(browserInfo.platform),
+                },
+              };
+            }),
             total,
           };
         }}
