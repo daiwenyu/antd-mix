@@ -15,6 +15,10 @@ Track.init({
 export default () => {
   const columns: ProColumns[] = [
     {
+      title: '设备序列号',
+      dataIndex: ['systemProfile', 'IMEI'],
+    },
+    {
       title: '生成时间',
       dataIndex: ['systemProfile', 'time'],
       valueType: 'dateTime',
@@ -48,11 +52,11 @@ export default () => {
     //   dataIndex: ['systemProfile', 'model'],
     //   align: 'center',
     // },
-    {
-      title: 'IP',
-      dataIndex: ['systemProfile', 'ip'],
-      align: 'center',
-    },
+    // {
+    //   title: 'IP',
+    //   dataIndex: ['systemProfile', 'ip'],
+    //   align: 'center',
+    // },
     {
       title: '事件数据',
       dataIndex: 'eventProfile',
@@ -118,12 +122,16 @@ export default () => {
         rowKey="_id"
         columns={columns}
         scroll={{ x: 'max-content' }}
+        pagination={{
+          defaultPageSize: 10,
+          showQuickJumper: true,
+          showSizeChanger: true,
+        }}
         request={async (params) => {
           const res = await fetch(
             `${GOOCCBY}/analysis/getAll?${new URLSearchParams(params)}`,
           );
           const { data = [], total = 0 } = (await res.json()) || {};
-          console.log(data);
           return {
             success: true,
             data,
