@@ -1,3 +1,6 @@
+import Cookies from 'js-cookie';
+import { generateRandomString } from '../Utils/common';
+
 declare global {
   interface Window {
     [Track.key]: TrackConfig;
@@ -27,8 +30,8 @@ export interface UserProfile {
 
 // 系统信息
 export interface SystemProfile {
-  // 当前操作系统及浏览器信息
-  // userAgent: string;
+  // 自定义设备序列号
+  IMEI: string;
   // 视口高度
   innerHeight: number;
   // 视口宽度
@@ -68,13 +71,13 @@ export class Track {
   static async send(data: any = {}) {
     const config = window[Track.key];
     this.checkConfig(config);
+
     await fetch(config.serverUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      credentials: 'include',
-      mode: 'cors',
+      // mode: 'cors',
       body: JSON.stringify({
         ...data,
         systemProfile: this.getSystemProfile(),
@@ -111,12 +114,18 @@ export class Track {
 
   // 获取系统信息
   static getSystemProfile(): SystemProfile {
+    const IMEI = Cookies.get('__IMEI__');
+    if (!IMEI) {
+      Cookies.set('__IMEI__', generateRandomString(16), {
+        expires: 90,
+      });
+    }
     return {
       innerHeight: window.innerHeight,
       innerWidth: window.innerWidth,
-      // userAgent: navigator.userAgent,
       href: location.href,
       time: Date.now(),
+      IMEI: Cookies.get('__IMEI__')!,
     };
   }
 
