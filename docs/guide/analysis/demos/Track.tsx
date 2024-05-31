@@ -1,3 +1,10 @@
+declare global {
+  const GOOCCBY: string;
+  interface Window {
+    Guard: typeof Track;
+  }
+}
+
 import { ProColumns, ProTable } from '@ant-design/pro-components';
 import { Button, Space, Tooltip, Typography } from 'antd';
 import { Analysis, Utils } from 'antd-mix';
@@ -7,8 +14,8 @@ import React from 'react';
 const { generateRandomString } = Utils;
 const { Text } = Typography;
 const { Track } = Analysis;
-
-Track.init({
+window.Guard = Track;
+window.Guard.init({
   serverUrl: `${GOOCCBY}/analysis/track`,
   debug: true,
   autoReportError: true,
@@ -120,7 +127,7 @@ export default () => {
       <Space>
         <Button
           onClick={() => {
-            Track.setUserProfile({
+            window.Guard.setUserProfile({
               id: '123321',
               userName: '张三',
               email: 'dwy@qq.com',
@@ -136,7 +143,7 @@ export default () => {
               data[generateRandomString(Math.ceil(Math.random() * 8))] =
                 generateRandomString(Math.random() * 8);
             }
-            Track.push({
+            window.Guard.push({
               type: 'click',
               ...data,
             });

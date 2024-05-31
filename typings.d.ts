@@ -1,3 +1,8 @@
+// declare global {
+//   const GOOCCBY: string;
+// }
 declare global {
-  const GOOCCBY: string;
+  interface Window {
+    [Track.key]: TrackConfig;
+  }
 }

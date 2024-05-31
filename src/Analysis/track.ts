@@ -1,10 +1,10 @@
 import Cookies from 'js-cookie';
+import pako from 'pako';
 import { generateRandomString } from '../Utils/common';
 
 declare global {
   interface Window {
     [Track.key]: TrackConfig;
-    Track?: Track;
   }
 }
 export interface TrackConfig {
@@ -60,6 +60,11 @@ export interface ErrorProfile {
 export class Track {
   static readonly key = Symbol('track');
 
+  // 获取Track Symbol Key
+  static getKey() {
+    return this.key;
+  }
+
   // 检查必填配置项
   static checkConfig(config?: TrackConfig) {
     if (!config?.serverUrl) {
@@ -71,26 +76,25 @@ export class Track {
   static async send(data: any = {}) {
     const config = window[Track.key];
     this.checkConfig(config);
-    await fetch(config.serverUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
+    const compressed = pako.deflate(
+      JSON.stringify({
         ...data,
         systemProfile: this.getSystemProfile(),
         userProfile: this.getUserProfile(),
       }),
+    );
+    await fetch(config.serverUrl, {
+      method: 'POST',
+      body: compressed,
+      // headers: {
+      //   Accept: 'application/x-raw',
+      // },
     });
   }
 
   // 挂载初始配置
   static mountInitData(config: TrackConfig) {
-    const { debug } = config;
     window[Track.key] = config;
-    if (debug) {
-      window.Track = this;
-    }
   }
 
   // 挂载自动化任务
@@ -100,6 +104,7 @@ export class Track {
       // 短时间内推送超过10个错误，关闭监听
       window.addEventListener('error', (event) => {
         const { message, filename } = event;
+
         const errorProfile: ErrorProfile = {
           message,
           filename,

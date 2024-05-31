@@ -14,5 +14,5 @@
     "target": "ES2021",
     "module": "NodeNext"
   },
-  "include": [".dumirc.ts", "src/**/*", "docs/**/*"]
+  "include": [".dumirc.ts", "src/**/*", "docs/**/*", "typings.d.ts"]
 }

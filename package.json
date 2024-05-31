@@ -1,6 +1,6 @@
 {
   "name": "antd-mix",
-  "version": "2.1.2",
+  "version": "2.1.5",
   "description": "",
   "license": "MIT",
   "module": "dist/index.js",
@@ -46,13 +46,15 @@
   },
   "dependencies": {
     "image-conversion": "^2.1.1",
-    "js-cookie": "^3.0.5"
+    "js-cookie": "^3.0.5",
+    "pako": "^2.1.0"
   },
   "devDependencies": {
     "@ant-design/pro-components": "^2.7.9",
     "@commitlint/cli": "^19.3.0",
     "@commitlint/config-conventional": "^19.2.2",
     "@types/js-cookie": "^3.0.6",
+    "@types/pako": "^2.0.3",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "@umijs/lint": "^4.2.5",
