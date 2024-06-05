@@ -1,31 +1,27 @@
 import Cookies from 'js-cookie';
 import pako from 'pako';
-import { generateRandomString } from '../Utils/common';
+import { generateRandomString } from '../Utils';
 
-declare global {
-  interface Window {
-    [Track.key]: TrackConfig;
-  }
-}
 export interface TrackConfig {
-  // 接受埋点数据的接口地址
-  serverUrl: string;
+  // 应用ID
+  appId: string;
+  // 接口地址
+  serverUrl?: string;
+
   // 是否开启调试模式
   debug?: boolean;
   // 是否自动上报错误信息，默认不上报
   autoReportError?: boolean;
-  // 当前用户信息
-  userProfile?: UserProfile;
 }
 
 // 用户信息
 export interface UserProfile {
   // 工号
-  id: string;
+  userId: string;
   // 用户名
   userName: string;
   // 邮箱
-  email: string;
+  // email: string;
 }
 
 // 系统信息
@@ -39,78 +35,96 @@ export interface SystemProfile {
   // 当前页面地址
   href: string;
   // 当前时间
-  time: number;
+  systemTime: Date;
 }
 
-// 事件信息
-export interface EventProfile {
+export enum TrackEventTypeEnum {
+  query = '查询',
+  add = '新增',
+  update = '修改',
+  delete = '删除',
+  export = '导出',
+}
+
+// 业务事件埋点信息
+export interface TrackEventProfile {
   // 事件类型 click 点击事件 view 浏览事件
-  type: 'click' | 'view';
-  [key: string]: any;
+  eventType: keyof typeof TrackEventTypeEnum;
+  // 操作内容
+  content: string;
+  // 模块
+  module: string;
 }
 
 // 错误信息
 export interface ErrorProfile {
   // 错误发生的文件名
-  filename: string;
+  fileName: string;
   // 错误信息
   message: string;
 }
 
-export class Track {
-  static readonly key = Symbol('track');
-
-  // 获取Track Symbol Key
-  static getKey() {
-    return this.key;
-  }
+class Track {
+  static config = {} as TrackConfig;
+  static userProfile = {} as UserProfile;
 
   // 检查必填配置项
   static checkConfig(config?: TrackConfig) {
-    if (!config?.serverUrl) {
-      throw new Error('serverUrl is required');
+    if (!config) {
+      throw new Error('Track config is required');
     }
+    if (!config.appId) {
+      throw new Error('Track config appId is required');
+    }
+    this.config = config;
   }
 
   // 发送埋点数据
   static async send(data: any = {}) {
-    const config = window[Track.key];
+    const config = this.config;
     this.checkConfig(config);
-    const compressed = pako.deflate(
-      JSON.stringify({
-        ...data,
-        systemProfile: this.getSystemProfile(),
-        userProfile: this.getUserProfile(),
-      }),
-    );
-    await fetch(config.serverUrl, {
+    const reqData = {
+      ...data,
+      ...this.getSystemProfile(),
+      ...this.getUserProfile(),
+      appId: config.appId,
+    };
+    const compressed = pako.deflate(JSON.stringify(reqData));
+    await fetch(config.serverUrl!, {
       method: 'POST',
       body: compressed,
-      // headers: {
-      //   Accept: 'application/x-raw',
-      // },
     });
   }
 
   // 挂载初始配置
   static mountInitData(config: TrackConfig) {
-    window[Track.key] = config;
+    this.config = config;
   }
 
   // 挂载自动化任务
   static mountAutoTask() {
-    const { autoReportError } = window[this.key];
+    const { autoReportError } = this.config;
     if (autoReportError) {
-      // 短时间内推送超过10个错误，关闭监听
+      // TODO 短时间内推送超过10个错误，关闭监听
       window.addEventListener('error', (event) => {
         const { message, filename } = event;
 
-        const errorProfile: ErrorProfile = {
-          message,
-          filename,
+        const errorInfo: ErrorProfile = {
+          message: message,
+          fileName: filename,
         };
-        this.send({ errorProfile });
+        this.send({ errorInfo: JSON.stringify(errorInfo), type: 'error' });
       });
+
+      // 监听点击事件
+      // window.addEventListener(
+      //   'click',
+      //   (event) => {
+      //     const { target } = event;
+      //     console.log(target.parentElement);
+      //   },
+      //   true
+      // );
     }
   }
 
@@ -126,36 +140,31 @@ export class Track {
       innerHeight: window.innerHeight,
       innerWidth: window.innerWidth,
       href: location.href,
-      time: Date.now(),
+      systemTime: new Date(),
       IMEI: Cookies.get('__IMEI__')!,
     };
   }
 
   // 获取当前用户信息，返回格式化后的用户信息
   static getUserProfile(): UserProfile {
-    let userProfile = (window[this.key].userProfile as UserProfile) || {};
-    if (!userProfile?.id) {
-      userProfile.id = '';
+    let userProfile = this.userProfile;
+    if (!userProfile?.userId) {
+      userProfile.userId = '';
     }
     if (!userProfile?.userName) {
       userProfile.userName = '';
-    }
-    if (!userProfile?.email) {
-      userProfile.email = '';
     }
     return userProfile;
   }
 
   // 设置当前用户信息
   static setUserProfile(userProfile: UserProfile) {
-    window[this.key].userProfile = userProfile;
+    this.userProfile = userProfile;
   }
 
-  // 推送埋点信息
-  static async push(data: EventProfile) {
-    await this.send({
-      eventProfile: data,
-    });
+  // 推送业务事件埋点信息
+  static async push(eventData: TrackEventProfile) {
+    await this.send({ eventData: JSON.stringify(eventData), type: 'event' });
   }
 
   static init(config: TrackConfig) {
@@ -164,3 +173,5 @@ export class Track {
     this.mountAutoTask();
   }
 }
+
+export default Track;
