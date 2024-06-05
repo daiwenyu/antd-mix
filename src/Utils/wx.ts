@@ -1,6 +1,6 @@
 declare const wx: any;
 
-export const isWechat = window.navigator.userAgent
+export const isWechat = navigator.userAgent
   .toLowerCase()
   .includes('micromessenger');
 

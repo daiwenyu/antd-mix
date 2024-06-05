@@ -1,5 +1,5 @@
 export const getUrlParams = (str?: string) => {
-  let paramsStr = window.location.search;
+  let paramsStr = location.search;
   if (typeof str === 'string') {
     if (str.startsWith('http')) {
       const url = new URL(str);

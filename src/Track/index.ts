@@ -106,7 +106,7 @@ class Track {
     const { autoReportError } = this.config;
     if (autoReportError) {
       // TODO 短时间内推送超过10个错误，关闭监听
-      window.addEventListener('error', (event) => {
+      addEventListener('error', (event) => {
         const { message, filename } = event;
 
         const errorInfo: ErrorProfile = {
@@ -117,7 +117,7 @@ class Track {
       });
 
       // 监听点击事件
-      // window.addEventListener(
+      // addEventListener(
       //   'click',
       //   (event) => {
       //     const { target } = event;
@@ -137,8 +137,8 @@ class Track {
       });
     }
     return {
-      innerHeight: window.innerHeight,
-      innerWidth: window.innerWidth,
+      innerHeight: innerHeight,
+      innerWidth: innerWidth,
       href: location.href,
       systemTime: new Date(),
       IMEI: Cookies.get('__IMEI__')!,
