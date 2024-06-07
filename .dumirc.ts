@@ -25,4 +25,11 @@ export default defineConfig({
         ? 'https://venus.gooccby.com'
         : 'http://localhost:3000',
   },
+  proxy:{
+    '/api': {
+      target: 'http://localhost:3000/pousheng-guard/api',
+      changeOrigin: true,
+      pathRewrite: { '^/api': '' },
+    },
+  }
 });

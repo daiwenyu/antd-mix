@@ -5,7 +5,7 @@ import React from 'react';
 // App入口文件初始化
 Track.init({
   appId: '112233',
-  serverUrl: `//localhost:3000/api/analysis/track`,
+  serverUrl: `/api/analysis/track`,
 });
 
 export default () => {
