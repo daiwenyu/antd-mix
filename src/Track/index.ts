@@ -38,18 +38,8 @@ export interface SystemProfile {
   systemTime: Date;
 }
 
-export enum TrackEventTypeEnum {
-  query = '查询',
-  add = '新增',
-  update = '修改',
-  delete = '删除',
-  export = '导出',
-}
-
 // 业务事件埋点信息
 export interface TrackEventProfile {
-  // 事件类型 click 点击事件 view 浏览事件
-  eventType: keyof typeof TrackEventTypeEnum;
   // 操作内容
   content: string;
   // 模块
@@ -164,7 +154,10 @@ class Track {
 
   // 推送业务事件埋点信息
   static async push(eventData: TrackEventProfile) {
-    await this.send({ eventData: JSON.stringify(eventData), type: 'event' });
+    await this.send({
+      eventData: JSON.stringify(eventData),
+      type: 'operation',
+    });
   }
 
   static init(config: TrackConfig) {
