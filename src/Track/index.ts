@@ -81,10 +81,10 @@ class Track {
   // 发送埋点数据
   static async send({
     type,
-    data,
+    log,
   }: {
     type: TrackType;
-    data: ErrorProfile | CustomizeProfile;
+    log: ErrorProfile | CustomizeProfile;
   }) {
     const config = this.config;
     this.checkConfig(config);
@@ -93,7 +93,7 @@ class Track {
       ...this.getUserProfile(),
       type,
       appId: config.appId,
-      data: JSON.stringify(data),
+      log: JSON.stringify(log),
     };
     const compressed = pako.deflate(JSON.stringify(reqData));
     await fetch(config.serverUrl!, {
@@ -172,7 +172,7 @@ class Track {
   // 推送错误日志
   static async errorLog(errorLog: ErrorProfile) {
     await this.send({
-      data: errorLog,
+      log: errorLog,
       type: 'error',
     });
   }
@@ -180,7 +180,7 @@ class Track {
   // 推送用户触发日志
   static async eventLog(eventLog: CustomizeProfile) {
     await this.send({
-      data: eventLog,
+      log: eventLog,
       type: 'event',
     });
   }
@@ -188,7 +188,7 @@ class Track {
   // 推送页面访问日志
   static async visitLog(visitLog: CustomizeProfile) {
     await this.send({
-      data: visitLog,
+      log: visitLog,
       type: 'visit',
     });
   }
@@ -196,7 +196,7 @@ class Track {
   // 推送接口访问日志
   static async apiLog(apiLog: any) {
     await this.send({
-      data: apiLog,
+      log: apiLog,
       type: 'api',
     });
   }
