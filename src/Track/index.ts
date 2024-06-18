@@ -14,15 +14,11 @@ export interface TrackConfig {
 }
 
 // 埋点信息类型
-enum TrackTypeEnum {
-  // 错误
-  error = 'error',
-  // 页面访问
-  visit = 'visit',
-  // 用户页面触发
-  event = 'event',
-  // 接口触发
-  api = 'api',
+export enum TrackTypeEnum {
+  error = '错误信息',
+  visit = '页面访问',
+  event = '用户触发',
+  api = '接口触发',
 }
 
 export type TrackType = keyof typeof TrackTypeEnum;
