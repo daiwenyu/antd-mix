@@ -7,12 +7,25 @@ export interface TrackConfig {
   appId: string;
   // 接口地址
   serverUrl?: string;
-
   // 是否开启调试模式
   debug?: boolean;
   // 是否自动上报错误信息，默认不上报
   autoReportError?: boolean;
 }
+
+// 埋点信息类型
+enum TrackTypeEnum {
+  // 错误
+  error = 'error',
+  // 页面访问
+  visit = 'visit',
+  // 用户页面触发
+  event = 'event',
+  // 接口触发
+  api = 'api',
+}
+
+export type TrackType = keyof typeof TrackTypeEnum;
 
 // 用户信息
 export interface UserProfile {
@@ -20,8 +33,6 @@ export interface UserProfile {
   userId: string;
   // 用户名
   userName: string;
-  // 邮箱
-  // email: string;
 }
 
 // 系统信息
@@ -38,12 +49,14 @@ export interface SystemProfile {
   systemTime: Date;
 }
 
-// 业务事件埋点信息
-export interface TrackEventProfile {
+// 自定义埋点信息
+export interface CustomizeProfile {
   // 操作内容
   content: string;
   // 模块
   module: string;
+  // 其他信息
+  [key: string]: any;
 }
 
 // 错误信息
@@ -70,25 +83,27 @@ class Track {
   }
 
   // 发送埋点数据
-  static async send(data: any = {}) {
+  static async send({
+    type,
+    data,
+  }: {
+    type: TrackType;
+    data: ErrorProfile | CustomizeProfile;
+  }) {
     const config = this.config;
     this.checkConfig(config);
     const reqData = {
-      ...data,
       ...this.getSystemProfile(),
       ...this.getUserProfile(),
+      type,
       appId: config.appId,
+      data: JSON.stringify(data),
     };
     const compressed = pako.deflate(JSON.stringify(reqData));
     await fetch(config.serverUrl!, {
       method: 'POST',
       body: compressed,
     });
-  }
-
-  // 挂载初始配置
-  static mountInitData(config: TrackConfig) {
-    this.config = config;
   }
 
   // 挂载自动化任务
@@ -98,12 +113,11 @@ class Track {
       // TODO 短时间内推送超过10个错误，关闭监听
       addEventListener('error', (event) => {
         const { message, filename } = event;
-
         const errorInfo: ErrorProfile = {
           message: message,
           fileName: filename,
         };
-        this.send({ errorInfo: JSON.stringify(errorInfo), type: 'error' });
+        this.errorLog(errorInfo);
       });
 
       // 监听点击事件
@@ -152,18 +166,43 @@ class Track {
     this.userProfile = userProfile;
   }
 
-  // 推送业务事件埋点信息
-  static async push(eventData: TrackEventProfile) {
+  // 挂载初始配置
+  static init(config: TrackConfig) {
+    this.checkConfig(config);
+    this.config = config;
+    this.mountAutoTask();
+  }
+
+  // 推送错误日志
+  static async errorLog(errorLog: ErrorProfile) {
     await this.send({
-      eventData: JSON.stringify(eventData),
-      type: 'operation',
+      data: errorLog,
+      type: 'error',
     });
   }
 
-  static init(config: TrackConfig) {
-    this.checkConfig(config);
-    this.mountInitData(config);
-    this.mountAutoTask();
+  // 推送用户触发日志
+  static async eventLog(eventLog: CustomizeProfile) {
+    await this.send({
+      data: eventLog,
+      type: 'event',
+    });
+  }
+
+  // 推送页面访问日志
+  static async visitLog(visitLog: CustomizeProfile) {
+    await this.send({
+      data: visitLog,
+      type: 'visit',
+    });
+  }
+
+  // 推送接口访问日志
+  static async apiLog(apiLog: any) {
+    await this.send({
+      data: apiLog,
+      type: 'api',
+    });
   }
 }
 

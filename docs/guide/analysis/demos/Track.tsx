@@ -6,6 +6,7 @@ import React from 'react';
 Track.init({
   appId: '112233',
   serverUrl: `/api/analysis/track`,
+  autoReportError: true,
 });
 
 export default () => {
@@ -23,8 +24,7 @@ export default () => {
       </Button>
       <Button
         onClick={() => {
-          Track.push({
-            eventType: 'query',
+          Track.eventLog({
             content: '查询用户信息',
             module: '用户管理',
           });
