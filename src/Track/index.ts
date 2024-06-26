@@ -67,6 +67,9 @@ class Track {
   static config = {} as TrackConfig;
   static userProfile = {} as UserProfile;
 
+  // 埋点队列
+  static trackQueue: any[] = [];
+
   // 检查必填配置项
   static checkConfig(config?: TrackConfig) {
     if (!config) {
@@ -79,27 +82,12 @@ class Track {
   }
 
   // 发送埋点数据
-  static async send({
-    type,
-    log,
-  }: {
-    type: TrackType;
-    log: ErrorProfile | CustomizeProfile;
-  }) {
-    const config = this.config;
-    this.checkConfig(config);
-    const reqData = {
-      ...this.getSystemProfile(),
-      ...this.getUserProfile(),
-      type,
-      appId: config.appId,
-      log: JSON.stringify(log),
-    };
-    const compressed = pako.deflate(JSON.stringify(reqData));
-    await fetch(config.serverUrl!, {
-      method: 'POST',
-      body: compressed,
-    });
+  static async send() {
+    const data = this.trackQueue.splice(0, this.trackQueue.length);
+    const compressed = pako.deflate(JSON.stringify(data));
+    if (data.length) {
+      navigator.sendBeacon(this.config.serverUrl!, compressed);
+    }
   }
 
   // 挂载自动化任务
@@ -126,6 +114,13 @@ class Track {
       //   true
       // );
     }
+
+    //关闭页面时，发送剩余的埋点数据
+    addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'hidden') {
+        this.send();
+      }
+    });
   }
 
   // 获取系统信息
@@ -169,33 +164,57 @@ class Track {
     this.mountAutoTask();
   }
 
+  // 推送埋点信息进入队列
+  static pushQueue({
+    type,
+    log,
+  }: {
+    type: TrackType;
+    log: ErrorProfile | CustomizeProfile;
+  }) {
+    const config = this.config;
+    this.checkConfig(config);
+    const reqData = {
+      ...this.getSystemProfile(),
+      ...this.getUserProfile(),
+      type,
+      appId: config.appId,
+      log: JSON.stringify(log),
+    };
+
+    this.trackQueue.push(reqData);
+    if (this.trackQueue.length > 4) {
+      this.send();
+    }
+  }
+
   // 推送错误日志
-  static async errorLog(errorLog: ErrorProfile) {
-    await this.send({
+  static errorLog(errorLog: ErrorProfile) {
+    this.pushQueue({
       log: errorLog,
       type: 'error',
     });
   }
 
   // 推送用户触发日志
-  static async eventLog(eventLog: CustomizeProfile) {
-    await this.send({
+  static eventLog(eventLog: CustomizeProfile) {
+    this.pushQueue({
       log: eventLog,
       type: 'event',
     });
   }
 
   // 推送页面访问日志
-  static async visitLog(visitLog: CustomizeProfile) {
-    await this.send({
+  static visitLog(visitLog: CustomizeProfile) {
+    this.pushQueue({
       log: visitLog,
       type: 'visit',
     });
   }
 
   // 推送接口访问日志
-  static async apiLog(apiLog: any) {
-    await this.send({
+  static apiLog(apiLog: any) {
+    this.pushQueue({
       log: apiLog,
       type: 'api',
     });

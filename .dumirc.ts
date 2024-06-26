@@ -20,16 +20,9 @@ export default defineConfig({
     `,
   ],
   define: {
-    GOOCCBY:
+    AnalysisServer:
       process.env.NODE_ENV === 'production'
         ? 'https://venus.gooccby.com'
         : 'http://localhost:3000',
   },
-  proxy:{
-    '/api': {
-      target: 'http://localhost:3000/pousheng-guard/api',
-      changeOrigin: true,
-      pathRewrite: { '^/api': '' },
-    },
-  }
 });

@@ -5,7 +5,7 @@ import React from 'react';
 // App入口文件初始化
 Track.init({
   appId: '112233',
-  serverUrl: `/api/analysis/track`,
+  serverUrl: `${AnalysisServer}/pousheng-guard/api/analysis/track`,
   autoReportError: true,
 });
 
