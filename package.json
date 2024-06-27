@@ -1,6 +1,6 @@
 {
   "name": "antd-mix",
-  "version": "2.2.3",
+  "version": "2.2.6",
   "description": "",
   "license": "MIT",
   "main": "lib/index.js",
@@ -59,7 +59,7 @@
     "@types/pako": "^2.0.3",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
-    "@umijs/lint": "^4.2.13",
+    "@umijs/lint": "^4.2.15",
     "antd": "^5.18.3",
     "dumi": "^2.3.8",
     "eslint": "^9.5.0",

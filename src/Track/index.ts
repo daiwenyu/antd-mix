@@ -1,7 +1,7 @@
 import Cookies from 'js-cookie';
 import pako from 'pako';
 import { generateRandomString } from '../Utils';
-
+import { AccessItemType, RouteItem, RouteUtil } from '../Utils/route';
 export interface TrackConfig {
   // 应用ID
   appId: string;
@@ -9,8 +9,20 @@ export interface TrackConfig {
   serverUrl?: string;
   // 是否开启调试模式
   debug?: boolean;
+  // 构建来源是否绑定权限系统
+  isBindPermission?: boolean;
   // 是否自动上报错误信息，默认不上报
   autoReportError?: boolean;
+  // 当前登录用户信息
+  userProfile?: UserProfile;
+  // 菜单名称映射
+  menuNameMap?: {
+    [key: string]: string;
+  };
+  // 路由配置
+  routes?: RouteItem[];
+  // 权限配置
+  access?: AccessItemType[];
 }
 
 // 埋点信息类型
@@ -158,9 +170,21 @@ class Track {
   }
 
   // 挂载初始配置
-  static init(config: TrackConfig) {
-    this.checkConfig(config);
-    this.config = config;
+  static init({
+    access = [],
+    routes = [],
+    menuNameMap = {},
+    userProfile,
+    ...restConfig
+  }: TrackConfig) {
+    this.checkConfig(restConfig);
+    RouteUtil.setMenuNameMap(menuNameMap);
+    RouteUtil.setRoute(routes);
+    RouteUtil.setAccess(access);
+    this.config = restConfig;
+    if (userProfile) {
+      this.setUserProfile(userProfile);
+    }
     this.mountAutoTask();
   }
 
@@ -197,15 +221,38 @@ class Track {
   }
 
   // 推送用户触发日志
-  static eventLog(eventLog: CustomizeProfile) {
+  static eventLog(eventLog: CustomizeProfile | string) {
+    const { isBindPermission } = this.config;
+    if (isBindPermission && typeof eventLog === 'string') {
+      const routeNames: string[] = RouteUtil.formatRouteNames(
+        location?.pathname!,
+      );
+      Object.assign(eventLog, {
+        module: routeNames.join('-'),
+        content: '触发: ' + RouteUtil.accessMap[eventLog!].logAction,
+      });
+    }
     this.pushQueue({
-      log: eventLog,
+      log: eventLog as CustomizeProfile,
       type: 'event',
     });
   }
 
   // 推送页面访问日志
-  static visitLog(visitLog: CustomizeProfile) {
+  static visitLog(visitLog?: CustomizeProfile) {
+    if (visitLog === undefined) {
+      visitLog = { module: '', content: '' };
+    }
+    const { isBindPermission } = this.config;
+    if (isBindPermission) {
+      const routeNames: string[] = RouteUtil.formatRouteNames(
+        location?.pathname!,
+      );
+      Object.assign(visitLog, {
+        module: routeNames.join('-'),
+        content: `访问页面: ${routeNames.pop()}`,
+      });
+    }
     this.pushQueue({
       log: visitLog,
       type: 'visit',
