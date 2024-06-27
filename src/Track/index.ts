@@ -227,10 +227,10 @@ class Track {
       const routeNames: string[] = RouteUtil.formatRouteNames(
         location?.pathname!,
       );
-      Object.assign(eventLog, {
+      eventLog = {
         module: routeNames.join('-'),
         content: '触发: ' + RouteUtil.accessMap[eventLog!].logAction,
-      });
+      };
     }
     this.pushQueue({
       log: eventLog as CustomizeProfile,
