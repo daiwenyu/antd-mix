@@ -1,7 +1,8 @@
 import Cookies from 'js-cookie';
 import pako from 'pako';
+import CurrentUser from '../CurrentUser';
 import { generateRandomString } from '../Utils';
-import { AccessItemType, RouteItem, RouteUtil } from '../Utils/route';
+
 export interface TrackConfig {
   // 应用ID
   appId: string;
@@ -9,20 +10,12 @@ export interface TrackConfig {
   serverUrl?: string;
   // 是否开启调试模式
   debug?: boolean;
-  // 构建来源是否绑定权限系统
-  isBindPermission?: boolean;
   // 是否自动上报错误信息，默认不上报
   autoReportError?: boolean;
   // 当前登录用户信息
   userProfile?: UserProfile;
-  // 菜单名称映射
-  menuNameMap?: {
-    [key: string]: string;
-  };
-  // 路由配置
-  routes?: RouteItem[];
-  // 权限配置
-  access?: AccessItemType[];
+  // 路由前缀
+  base?: string;
 }
 
 // 埋点信息类型
@@ -89,6 +82,9 @@ class Track {
     }
     if (!config.appId) {
       throw new Error('Track config appId is required');
+    }
+    if (CurrentUser.profile === null) {
+      throw new Error('请先调用CurrentUser对象设置系统信息');
     }
     this.config = config;
   }
@@ -170,20 +166,16 @@ class Track {
   }
 
   // 挂载初始配置
-  static init({
-    access = [],
-    routes = [],
-    menuNameMap = {},
-    userProfile,
-    ...restConfig
-  }: TrackConfig) {
+  static init({ userProfile, ...restConfig }: TrackConfig) {
     this.checkConfig(restConfig);
-    RouteUtil.setMenuNameMap(menuNameMap);
-    RouteUtil.setRoute(routes);
-    RouteUtil.setAccess(access);
     this.config = restConfig;
     if (userProfile) {
       this.setUserProfile(userProfile);
+    } else {
+      this.setUserProfile({
+        userId: CurrentUser.profile?.email!,
+        userName: CurrentUser.profile?.name!,
+      });
     }
     this.mountAutoTask();
   }
@@ -212,6 +204,19 @@ class Track {
     }
   }
 
+  // 获取模块名称
+  static getPageModuleName() {
+    let routeNames: string[] = [];
+    if (CurrentUser.profile) {
+      const { base = '/' } = this.config;
+      const { pathname } = location;
+      const { pathMap } = CurrentUser;
+
+      routeNames = pathMap[pathname.replace(base, '/')].module!;
+    }
+    return routeNames;
+  }
+
   // 推送错误日志
   static errorLog(errorLog: ErrorProfile) {
     this.pushQueue({
@@ -222,14 +227,16 @@ class Track {
 
   // 推送用户触发日志
   static eventLog(eventLog: CustomizeProfile | string) {
-    const { isBindPermission } = this.config;
-    if (isBindPermission && typeof eventLog === 'string') {
-      const routeNames: string[] = RouteUtil.formatRouteNames(
-        location?.pathname!,
-      );
+    if (typeof eventLog === 'string') {
+      const { base = '/' } = this.config;
+      const { pathname } = location;
+      const resetPath = pathname.replace(base, '/');
+      const routeNames: string[] = CurrentUser.pathMap[resetPath].module!;
       eventLog = {
         module: routeNames.join('-'),
-        content: '触发: ' + RouteUtil.accessMap[eventLog!].logAction,
+        content:
+          '触发: ' +
+          CurrentUser.pathMap[resetPath].options[eventLog!].logAction,
       };
     }
     this.pushQueue({
@@ -240,17 +247,16 @@ class Track {
 
   // 推送页面访问日志
   static visitLog(visitLog?: CustomizeProfile) {
+    const { base = '/' } = this.config;
     if (visitLog === undefined) {
       visitLog = { module: '', content: '' };
-    }
-    const { isBindPermission } = this.config;
-    if (isBindPermission) {
-      const routeNames: string[] = RouteUtil.formatRouteNames(
-        location?.pathname!,
-      );
+      const { pathname } = location;
+      const routeNames: string[] =
+        CurrentUser.pathMap[pathname.replace(base, '/')].module!;
+
       Object.assign(visitLog, {
         module: routeNames.join('-'),
-        content: `访问页面: ${routeNames.pop()}`,
+        content: `访问页面: ${[...routeNames].pop()}`,
       });
     }
     this.pushQueue({
