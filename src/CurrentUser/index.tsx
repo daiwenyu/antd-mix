@@ -1,22 +1,8 @@
-export type LocalRouteItemType = {
-  access?: string;
-  name?: string;
-  parentPath?: string;
-  path?: string;
-  routes?: LocalRouteItemType[];
-};
-
-export type AuthMenuItemType = {
-  logAction: any;
-  name: string;
-  meta?: { title: string };
-  permission?: string;
-  children?: AuthMenuItemType[];
-  path?: string;
-  builtIn?: boolean;
-};
-
-type MenuNameMapType = { [key: string]: string };
+import {
+  AuthMenuItemType,
+  LocalRouteItemType,
+  MenuNameMapType,
+} from '../interfaces/currentUser.interface';
 
 export interface CurrentUserConfig {
   // 获取当前用户权限
